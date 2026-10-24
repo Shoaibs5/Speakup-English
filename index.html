@@ -39,7 +39,7 @@ nav button span{display:block;font-size:20px}nav button.on{color:var(--pri);font
 table.tb{width:100%;border-collapse:collapse;font-size:14px}.tb td,.tb th{border-bottom:1px solid var(--line);padding:8px 4px;text-align:center}.tb td:first-child,.tb th:first-child{text-align:left}
 button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
 </style></head><body>
-<header style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px">SpeakUp English<span id="lvb" style="margin-left:0"></span><button class="chip" style="margin-left:auto;padding:6px 12px" onclick="fbk()">💬 Feedback</button></header>
+<header style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px">SpeakUp English<span id="lvb" style="margin-left:0"></span></header>
 <main id="v"></main><nav id="nav"></nav><div id="toast" role="status"></div>
 <script>
 /* ===== CONTENT (edit or replace later with files or a server) ===== */
@@ -124,7 +124,7 @@ function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';cl
 
 /* ===== VOICE ===== */
 const TTS='speechSynthesis' in window,STT=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
-function say(t,r){if(!TTS){toast('Text-to-speech is not supported in this browser.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=r||.9;speechSynthesis.speak(u)}
+function say(t,r){if(!TTS){toast('Text-to-speech is not supported in this browser.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=r||.9;applyV(u);speechSynthesis.speak(u)}
 function mic(cb,o){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){o.textContent='Speech recognition is not available in this browser. Use Chrome on Android with internet, or type your answer.';return}
 let r;try{r=new R()}catch(e){o.textContent='Could not start the microphone.';return}
 r.lang='en-US';r.onresult=e=>cb(e.results[0][0].transcript);
@@ -149,7 +149,7 @@ ${wk()}<div class="grid"><button class="b" onclick="go('lessons')">Lessons</butt
 V.lessons=()=>`<h2>Lessons</h2>${lvc()}`+L.map((l,i)=>l[1]===S.lv?`<div class="card tap" onclick="openL(${i})"><b>${S.done.includes(i)?'✅ ':''}${l[0]}</b><p>${l[2]}</p></div>`:'').join('');
 function openL(i){const l=L[i],d=S.done.includes(i);$('#v').innerHTML=`<button class="back" onclick="go('lessons')">← Lessons</button><h2>${l[0]}</h2><p>${l[2]}</p>`+l[3].map(p=>`<div class="row"><span>${p}</span>${sb(p)}</div>`).join('')+`<p><small>Listen, then say each sentence aloud three times. Use the Speaking tab for microphone practice.</small></p><button class="b" onclick="fin(${i})">${d?'Completed ✓ (tap to undo)':'Mark complete'}</button>`;scrollTo(0,0)}
 function fin(i){const k=S.done.indexOf(i);if(k<0){S.done.push(i);act();toast('Lesson completed!')}else{S.done.splice(k,1);save()}openL(i)}
-V.speak=()=>`<h2>Speaking</h2><div class="seg"><button class="${sp.m==='t'?'on':''}" onclick="sp.m='t';go()">Trainer</button><button class="${sp.m==='d'?'on':''}" onclick="sp.m='d';go()">Dialogues</button><button class="${sp.m==='r'?'on':''}" onclick="sp.m='r';go()">Listen and repeat</button></div><p class="note">This browser: listening ${TTS?'✅':'❌'}, speech recognition ${STT?'✅':'❌'}. Recognition needs internet and microphone permission. It shows the words the browser heard; it does not judge your pronunciation.</p>`+(sp.m==='t'?trn():sp.m==='d'?dlg():rep());
+V.speak=()=>`<h2>Speaking</h2><div class="seg"><button class="${sp.m==='t'?'on':''}" onclick="sp.m='t';go()">Trainer</button><button class="${sp.m==='d'?'on':''}" onclick="sp.m='d';go()">Dialogues</button><button class="${sp.m==='r'?'on':''}" onclick="sp.m='r';go()">Listen and repeat</button></div>${vcard()}<p class="note">This browser: listening ${TTS?'✅':'❌'}, speech recognition ${STT?'✅':'❌'}. Recognition needs internet and microphone permission. It shows the words the browser heard; it does not judge your pronunciation.</p>`+(sp.m==='t'?trn():sp.m==='d'?dlg():rep());
 function dlg(){if(sp.s==null)return SC.map((s,i)=>`<div class="card tap" onclick="sp.s=${i};sp.t=0;go()"><b>${s[1]} ${s[0]}</b><p><small>3 short exchanges</small></p></div>`).join('');
 const s=SC[sp.s],t=s[2][sp.t];return `<button class="back" onclick="sp.s=null;go()">← Scenarios</button><h3>${s[0]}, step ${sp.t+1} of 3</h3><div class="bub"><span>${t[0]}</span>${sb(t[0])}</div><textarea id="ans" rows="3" placeholder="Type your answer, or use the microphone"></textarea><div class="acts"><button class="b" onclick="mic(r=>{$('#ans').value=r;$('#mo').textContent='Heard: '+r},$('#mo'))">🎤 Speak</button><button class="b alt" onclick="$('#smp').hidden=false">Show sample</button></div><p id="mo" class="note"></p><div id="smp" class="card" hidden><small>Sample answer</small><div class="row" style="border:0;padding:0"><span>${t[1]}</span>${sb(t[1])}</div><small>Your own words are fine too.</small></div><button class="b" onclick="nxt()">${sp.t<2?'Next':'Finish'}</button>`}
 function nxt(){if(sp.t<2)sp.t++;else{act();toast('Dialogue complete!');sp.s=null}go()}
@@ -339,6 +339,16 @@ Let me give you a quick example.|Introduce an example.|Let me give you a short e
 In conclusion, we recommend this plan.|Start your conclusion.|In conclusion, I suggest we start now.
 Thank you for listening. Are there any questions?|End and invite questions.|Thank you for listening. Do you have any questions?`];
 MORE.forEach((b,i)=>b.split('\n').forEach(l=>{const p=l.split('|');TR[i][2].push([p[0],p[1],p[2],'Say it aloud twice, then answer in your own words.'])}));
+
+/* ===== VOICE CHOICE: 2 girl + 2 boy voices (uses voices installed on the phone) ===== */
+const VP=[{n:'Girl 1',g:'f',p:1.2,r:1},{n:'Girl 2',g:'f',p:1.05,r:.95},{n:'Boy 1',g:'m',p:.85,r:1},{n:'Boy 2',g:'m',p:.7,r:.95}];
+const FEM=/female|zira|samantha|susan|hazel|aria|jenny|emma|karen|moira|tessa|fiona|victoria|allison|ava|libby|sonia|natasha|catherine|heather|joanna|salli|kimberly|ivy|kendra/i,MAL=/(^|[^a-z])male|david|mark|james|daniel|guy|george|alex|fred|ryan|thomas|oliver|eric|brian|christopher|roger|liam|matthew|joey|justin|kevin|russell|arthur/i;
+const gen=v=>FEM.test(v.name)?'f':MAL.test(v.name)?'m':'u';
+function pickV(i){if(!TTS)return null;const all=speechSynthesis.getVoices().filter(v=>/^en/i.test(v.lang));if(!all.length)return null;const P=VP[i],k=VP.filter(x=>x.g===P.g).indexOf(P),same=all.filter(v=>gen(v)===P.g),unk=all.filter(v=>gen(v)==='u'),pool=same.length?same:unk.length?unk:all;return pool[k%pool.length]}
+function applyV(u){const i=S.vp||0,P=VP[i],v=pickV(i);if(v){u.voice=v;u.lang=v.lang}u.pitch=P.p;u.rate=u.rate*P.r}
+const vcard=()=>`<div class='card'><b>🔊 Voice</b><div class='chips'>${VP.map((p,i)=>`<button class='chip ${(S.vp||0)===i?'on':''}' onclick='setV(${i})'>${i<2?'👩':'👨'} ${p.n}</button>`).join('')}</div><button class='b sm alt' onclick='testV()'>Test voice</button><p class='note'>The voices come from your phone, so they differ by device. Girl and boy are matched by voice name when the phone provides it, otherwise by pitch. You can install more voices in Android Settings, Text-to-speech.</p></div>`;
+function testV(){say('Hello! I will help you practise English.')}
+function setV(i){S.vp=i;save();go();say('Hello! I am '+VP[i].n+'. Nice to meet you.')}
 
 /* ===== ROUTER ===== */
 const T=[['home','🏠','Home'],['lessons','📘','Lessons'],['speak','🎙️','Speaking'],['vocab','🔤','Vocabulary'],['gram','✏️','Grammar'],['quiz','🧠','Quizzes'],['prog','📈','Progress'],['plan','📅','Free plan'],['prem','⭐','Premium'],['more','ℹ️','More']];
