@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SpeakUp English</title>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f8ff;--card:#fff;--ink:#0f2a4a;--mut:#5a6f8c;--pri:#1565d8;--pri2:#0b3d91;--line:#d6e2f5;--ok:#17803f;--bad:#c93a3a;--sf:#eaf2ff;--onp:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1626;--card:#13233b;--ink:#e8f0ff;--mut:#9db3d3;--pri:#5aa0ff;--pri2:#123a7a;--line:#25405f;--ok:#4cc784;--bad:#ff8080;--sf:#183050;--onp:#06182f;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b1626;--card:#13233b;--ink:#e8f0ff;--mut:#9db3d3;--pri:#5aa0ff;--pri2:#123a7a;--line:#25405f;--ok:#4cc784;--bad:#ff8080;--sf:#183050;--onp:#06182f;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 Lexend,system-ui,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--pri2);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);background:var(--pri2);color:#fff;padding:12px 16px;font-weight:600;font-size:18px;z-index:5}
+header span{font-weight:400;opacity:.85;font-size:13px;margin-left:8px}
+main{max-width:640px;margin:0 auto;padding:16px 16px 96px}
+h2{margin:8px 0 12px;font-size:22px}h3{margin:18px 0 8px;font-size:17px}p{margin:6px 0}small,.note{color:var(--mut);font-size:13px}
+.hero{background:linear-gradient(135deg,var(--pri2),var(--pri));color:#fff;border-radius:18px;padding:22px}
+.hero h1{margin:0 0 6px;font-size:24px;line-height:1.25}.hero p{opacity:.92}.hero .b{background:#fff;color:#0b3d91;margin-top:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin:10px 0}
+.tap{cursor:pointer}.c{text-align:center}.big{font-size:26px;font-weight:600;margin:4px 0}
+.b{background:var(--pri);color:var(--onp);border:0;border-radius:12px;padding:12px 18px;font:inherit;font-weight:600;min-height:44px;cursor:pointer;margin:6px 6px 6px 0}
+.alt{background:var(--sf);color:var(--pri)}.w{width:100%;margin-right:0}.sm{padding:8px 12px;min-height:40px;font-size:14px}
+.ic{background:var(--sf);border:0;border-radius:50%;width:40px;height:40px;font-size:18px;cursor:pointer;flex:none}
+.back{background:none;border:0;color:var(--pri);font:inherit;font-weight:600;padding:8px 0;cursor:pointer}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0}
+.bub{background:var(--sf);border-radius:14px;padding:12px;display:flex;gap:10px;align-items:center;justify-content:space-between;margin:10px 0}
+textarea,input[type=search]{width:100%;box-sizing:border-box;font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0}
+.chips,.seg,.acts{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+.chip,.seg button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:8px 14px;font:inherit;font-size:14px;cursor:pointer}
+.chip.on,.seg button.on{background:var(--pri);color:var(--onp);border-color:var(--pri)}
+.bar{height:10px;background:var(--sf);border-radius:9px;overflow:hidden;margin:8px 0}.bar i{display:block;height:100%;background:var(--pri)}
+.grid,.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid .b{margin:0}.grid2 .card{margin:0}
+.o{display:block;width:100%;text-align:left;background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:12px;padding:12px;margin:8px 0;font:inherit;min-height:44px;cursor:pointer}
+.o.ok{border-color:var(--ok);background:var(--sf)}.o.bad{border-color:var(--bad)}.fb{font-weight:600}
+nav{position:fixed;left:0;right:0;bottom:0;display:flex;overflow-x:auto;background:var(--card);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav button{flex:1 0 auto;min-width:76px;background:none;border:0;color:var(--mut);font:inherit;font-size:11px;padding:8px 4px;cursor:pointer}
+nav button span{display:block;font-size:20px}nav button.on{color:var(--pri);font-weight:600}
+#toast{position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--pri2);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;display:none;z-index:20;max-width:88%}
+table.tb{width:100%;border-collapse:collapse;font-size:14px}.tb td,.tb th{border-bottom:1px solid var(--line);padding:8px 4px;text-align:center}.tb td:first-child,.tb th:first-child{text-align:left}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+</style></head><body>
+<header style="display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px">SpeakUp English<span id="lvb" style="margin-left:0"></span><button class="chip" style="margin-left:auto;padding:6px 12px" onclick="fbk()">💬 Feedback</button></header>
+<main id="v"></main><nav id="nav"></nav><div id="toast" role="status"></div>
+<script>
+/* ===== CONTENT (edit or replace later with files or a server) ===== */
+const LV={A:'Beginner A1–A2',B:'Intermediate B1–B2',C:'Advanced C1–C2'};
+const L=[
+['Greetings','A','Say hello and goodbye politely at any time of day.',['Good morning! How are you?','Nice to meet you.','See you tomorrow.']],
+['Introducing Yourself','A','Share your name, country and job in simple sentences.',['My name is Sara, and I am from Egypt.','I work as a teacher.','I am learning English.']],
+['Numbers, Time and Dates','A','Ask and tell the time and talk about prices.',['What time is it?','The class starts at half past nine.','How much is this?']],
+['Shopping','A','Ask about prices, sizes and ways to pay.',['Do you have this in a larger size?','Can I pay by card?','I will take it, please.']],
+['Ordering Food','B','Order politely and solve small problems in a restaurant.',['I would like the chicken, please.','Could we have the bill, please?','This is not what I ordered.']],
+['Travel and Directions','B','Find your way and handle problems when you travel.',['Excuse me, how do I get to the station?','Is this seat taken?','My flight has been delayed.']],
+['Talking About the Past','B','Tell short stories with past tenses.',['Yesterday I visited my cousin.','I had never tried sushi before.','While I was walking, it started to rain.']],
+['Job Interviews','B','Describe your experience and strengths with confidence.',['I have three years of experience in sales.','My greatest strength is solving problems calmly.','I would like to grow with your company.']],
+['Giving Opinions','C','Express and defend a view with nuance.',['From my perspective, remote work boosts productivity.','I see your point, but I would argue otherwise.','That said, the evidence is mixed.']],
+['Idioms and Nuance','C','Sound more natural with common idioms.',['Let’s call it a day.','It is a piece of cake.','I am feeling under the weather today.']]];
+const W=`breakfast|Daily life|the first meal of the day|I eat breakfast at seven.
+neighbour|Daily life|a person who lives near you|My neighbour is very kind.
+schedule|Daily life|a plan of times for activities|My schedule is busy today.
+borrow|Daily life|to take something and give it back later|Can I borrow your pen?
+tired|Feelings|needing rest or sleep|I am tired after work.
+excited|Feelings|very happy about something coming|She is excited about the trip.
+nervous|Feelings|a little afraid or worried|I feel nervous before interviews.
+proud|Feelings|happy about what you or others did|He is proud of his son.
+ticket|Travel|a document that lets you travel|I bought a train ticket.
+luggage|Travel|the bags you take on a trip|Our luggage is heavy.
+passport|Travel|an official ID for foreign travel|Please show your passport.
+delay|Travel|a time when something is late|There is a delay of one hour.
+receipt|Shopping|a paper that shows what you paid|Keep the receipt.
+discount|Shopping|a lower price|They offer a ten percent discount.
+cashier|Shopping|a person who takes your payment|Please pay the cashier.
+refund|Shopping|money returned to you|I asked for a refund.
+menu|Food|a list of dishes in a restaurant|Can I see the menu?
+delicious|Food|tasting very good|The soup is delicious.
+bill|Food|the paper showing what to pay|Could we have the bill?
+vegetarian|Food|a person who does not eat meat|I am vegetarian.
+colleague|Work|a person you work with|My colleague helped me.
+deadline|Work|the last time to finish something|The deadline is Friday.
+resume|Work|a document about your jobs and skills|I sent my resume yesterday.
+promotion|Work|a move to a better job|She got a promotion.
+reliable|Advanced|able to be trusted|He is a reliable partner.
+reluctant|Advanced|not willing to do something|I was reluctant to agree.
+ambiguous|Advanced|having more than one meaning|The answer was ambiguous.
+elaborate|Advanced|to explain with more detail|Could you elaborate?
+thrive|Advanced|to grow and do very well|Plants thrive in sunlight.
+inevitable|Advanced|certain to happen|Change is inevitable.`.split('\n').map(x=>x.split('|'));
+const SC=[
+['Introductions','👋',[['Hi! I don’t think we have met. What’s your name?','Hi, I’m Ali. Nice to meet you.'],['Where are you from?','I’m from Brazil.'],['What do you do?','I’m a student, and I’m learning English.']]],
+['Shopping','🛍️',[['Hello! Can I help you?','Yes, please. I’m looking for a blue jacket.'],['What size do you need?','Medium, please. How much is it?'],['It’s forty dollars.','That sounds good. Can I pay by card?']]],
+['At a Restaurant','🍽️',[['Good evening. Are you ready to order?','Yes, I’d like the pasta and a glass of water.'],['Would you like anything else?','No, thank you. That’s all for now.'],['Here is your food. Enjoy!','Thank you. Could we have the bill, please?']]],
+['Travel at the Airport','✈️',[['Good morning. May I see your passport?','Of course. Here you are.'],['What is the purpose of your visit?','I’m here on holiday for two weeks.'],['Enjoy your stay!','Thank you very much.']]],
+['Job Interview','💼',[['Tell me a little about yourself.','I’m a hard-working person with two years of experience in customer service.'],['Why do you want this job?','I enjoy working with people, and I want to learn and grow.'],['Do you have any questions for us?','Yes. What does a typical day in this role look like?']]]];
+const RS=['The weather is lovely today.','Could you speak more slowly, please?','I would like a cup of tea.','Where is the nearest bus stop?','I have lived here for three years.','Thank you for your help.'];
+const G=[
+['Tenses','⏱️','<b>Present simple</b> is for habits: I work. <b>Present continuous</b> is for now: I am working. <b>Past simple</b> is for finished actions: I worked. <b>Present perfect</b> links past and now: I have worked here for a year.',[['She ___ to school every day.',['go','goes','is go'],1,'Habits use present simple, and he/she/it adds -s.'],['I ___ dinner right now.',['cook','am cooking','cooked'],1,'“Right now” needs present continuous.']]],
+['Sentence Structure','🧱','Basic order is <b>Subject + Verb + Object</b>: I like tea. Questions use <b>Auxiliary + Subject + Verb</b>: Do you like tea? Put time and place at the end.',[['Choose the correct order.',['Like I tea','I like tea','Tea like I'],1,'English uses Subject + Verb + Object.'],['Choose the correct question.',['You do like tea?','Do you like tea?','Like you tea?'],1,'Questions begin with the auxiliary do/does.']]],
+['Articles','📰','Use <b>a</b> before consonant sounds, <b>an</b> before vowel sounds, and <b>the</b> for something specific or unique. Use no article for general plurals: I like dogs.',[['She has ___ apple.',['a','an','the'],1,'“Apple” starts with a vowel sound, so use an.'],['I saw ___ moon last night.',['a','an','the'],2,'There is only one moon, so use the.']]],
+['Prepositions','📍','<b>Time:</b> at 5 pm, on Monday, in July. <b>Place:</b> at the door, on the table, in the box.',[['The class is ___ Monday.',['at','on','in'],1,'Days use on.'],['We meet ___ 6 pm.',['at','on','in'],0,'Exact times use at.']]],
+['Common Mistakes','⚠️','Say “I am 20 years old”, not “I have 20 years”. Use <b>many</b> with countable nouns and <b>much</b> with uncountable nouns. Say “He doesn’t”, not “He don’t”.',[['He ___ like coffee.',['don’t','doesn’t','not'],1,'He/she/it uses doesn’t.'],['I have ___ friends here.',['much','many','little'],1,'Friends are countable, so use many.']]]];
+const Q=[
+['Choose the correct sentence.',['She go to work.','She goes to work.','She going to work.'],1,'He/she/it adds -s in present simple.'],
+['“Could I have the bill?” Where would you say this?',['At a restaurant','At a bank','At a school'],0,'You ask for the bill after a meal.'],
+['Which word means almost the same as “delicious”?',['tasty','boring','late'],0,'Tasty also means good to eat.'],
+['I ___ here since 2020.',['live','have lived','am living'],1,'Since + a starting point uses present perfect.'],
+['Choose the article: ___ hour',['a','an','the'],1,'“Hour” starts with a vowel sound because the h is silent.'],
+['The meeting is ___ 3 pm.',['on','at','in'],1,'Exact times use at.'],
+['What does “reluctant” mean?',['eager','unwilling','tired'],1,'Reluctant means not willing.'],
+['Best reply to “Nice to meet you.”',['Nice to meet you too.','I’m fine, thanks.','See you later.'],0,'Return the same greeting.'],
+['“Under the weather” means…',['feeling slightly ill','standing outside','very happy'],0,'It is an idiom for feeling unwell.'],
+['Which sentence is the most polite?',['Give me water.','I want water.','Could I have some water, please?'],2,'“Could I… please?” is polite.']];
+
+/* ===== STATE (saved in this browser only; replace save() with a cloud call later) ===== */
+const D=()=>({done:[],tr:[],pl:[],c30:[],fb:[],best:null,scores:[],days:{},streak:0,last:'',lv:'A',goal:5});
+/* Store: swap for cloud sync + sign-in later. Access: later set from a server-verified subscription. */
+const Store={load(){try{return JSON.parse(localStorage.getItem('su')||'{}')}catch(e){return{}}},save(s){try{localStorage.setItem('su',JSON.stringify(s))}catch(e){}}};
+const Access={previewUnlocked:true,canUse:()=>Access.previewUnlocked};
+let S=Object.assign(D(),Store.load());
+const save=()=>Store.save(S);
+const $=s=>document.querySelector(s),today=()=>new Date().toISOString().slice(0,10),yday=()=>new Date(Date.now()-864e5).toISOString().slice(0,10);
+function act(){const t=today();S.days[t]=(S.days[t]||0)+1;if(S.last!==t){S.streak=S.last===yday()?S.streak+1:1;S.last=t}save()}
+const nDay=()=>S.days[today()]||0,streak=()=>S.last===today()||S.last===yday()?S.streak:0;
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',2800)}
+
+/* ===== VOICE ===== */
+const TTS='speechSynthesis' in window,STT=!!(window.SpeechRecognition||window.webkitSpeechRecognition);
+function say(t,r){if(!TTS){toast('Text-to-speech is not supported in this browser.');return}speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-US';u.rate=r||.9;speechSynthesis.speak(u)}
+function mic(cb,o){const R=window.SpeechRecognition||window.webkitSpeechRecognition;if(!R){o.textContent='Speech recognition is not available in this browser. Use Chrome on Android with internet, or type your answer.';return}
+let r;try{r=new R()}catch(e){o.textContent='Could not start the microphone.';return}
+r.lang='en-US';r.onresult=e=>cb(e.results[0][0].transcript);
+r.onerror=e=>{o.textContent=/not-allowed|service/.test(e.error)?'Microphone permission is blocked. Allow the microphone in Chrome site settings (lock icon). If this page is inside a preview window, open the link directly in Chrome.':e.error==='no-speech'?'No speech heard. Tap and try again.':e.error==='network'?'Speech recognition needs an internet connection.':'Microphone error: '+e.error};
+o.textContent='Listening… speak now';try{r.start()}catch(e){o.textContent='Microphone is busy. Try again.'}}
+const nw=s=>s.toLowerCase().replace(/’/g,"'").replace(/[^a-z' ]/g,'').split(/\s+/).filter(Boolean);
+const sb=t=>`<button class="ic" data-t="${t}" onclick="say(this.dataset.t)" aria-label="Listen">🔊</button>`;
+
+/* ===== SHARED UI ===== */
+const lvc=()=>'<div class="chips">'+Object.keys(LV).map(k=>`<button class="chip ${S.lv===k?'on':''}" onclick="S.lv='${k}';vc='All';save();go()">${LV[k]}</button>`).join('')+'</div>';
+function qhtml(q,z){return `<div class="card q" data-a="${q[2]}" data-w="${q[3]}" ${z?'data-z="1"':''}><p><b>${q[0]}</b></p>`+q[1].map((o,j)=>`<button class="o" onclick="pick(this,${j})">${o}</button>`).join('')+'<p class="fb"></p></div>'}
+function pick(b,j){const q=b.parentNode;if(q.dataset.d)return;q.dataset.d=1;const a=+q.dataset.a,ok=j===a;q.querySelectorAll('.o')[a].classList.add('ok');if(!ok)b.classList.add('bad');q.querySelector('.fb').textContent=(ok?'✅ Correct! ':'❌ Not quite. ')+q.dataset.w;if(q.dataset.z)quizAfter(ok);else act()}
+
+/* ===== VIEWS ===== */
+const V={};let cur='home',sp={m:'t',s:null,t:0,tl:null,ts:0},vq='',vc='All',va=false,pr=null,gi=null,qz=null;
+V.home=()=>{const n=nDay(),w=W[Math.floor(Date.now()/864e5)%W.length];return `<section class="hero"><h1>Speak English with confidence</h1><p>Five minutes a day. Listen, repeat and answer.</p><button class="b" onclick="startSp()">Start speaking</button></section>
+<div class="card"><b>👋 Help us improve SpeakUp English</b><p>This app is new and growing. Please try it and tell us what works, what is confusing, and what you want to learn next.</p><button class="b" onclick="fbk()">Give Feedback</button><p><small>Please do not type passwords or payment details in the form.</small></p></div><h3>Your level</h3>${lvc()}
+<div class="card"><b>Daily goal</b><div class="bar"><i style="width:${Math.min(100,n/S.goal*100)}%"></i></div><small>${n} of ${S.goal} activities today, ${streak()}-day streak</small></div>
+<div class="card"><b>Free 7-day plan</b><p><small>${S.pl.length} of 7 days done</small></p><button class="b sm" onclick="go('plan')">Open today’s plan</button></div>
+<div class="card"><small>Word of the day</small><div class="row" style="border:0;padding:0"><div><p class="big">${w[0]}</p><p>${w[2]}</p><p><i>${w[3]}</i></p></div>${sb(w[0]+'. '+w[3])}</div></div>
+${wk()}<div class="grid"><button class="b" onclick="go('lessons')">Lessons</button><button class="b" onclick="go('vocab')">Vocabulary</button><button class="b" onclick="go('gram')">Grammar</button><button class="b" onclick="go('quiz')">Quizzes</button></div>`};
+V.lessons=()=>`<h2>Lessons</h2>${lvc()}`+L.map((l,i)=>l[1]===S.lv?`<div class="card tap" onclick="openL(${i})"><b>${S.done.includes(i)?'✅ ':''}${l[0]}</b><p>${l[2]}</p></div>`:'').join('');
+function openL(i){const l=L[i],d=S.done.includes(i);$('#v').innerHTML=`<button class="back" onclick="go('lessons')">← Lessons</button><h2>${l[0]}</h2><p>${l[2]}</p>`+l[3].map(p=>`<div class="row"><span>${p}</span>${sb(p)}</div>`).join('')+`<p><small>Listen, then say each sentence aloud three times. Use the Speaking tab for microphone practice.</small></p><button class="b" onclick="fin(${i})">${d?'Completed ✓ (tap to undo)':'Mark complete'}</button>`;scrollTo(0,0)}
+function fin(i){const k=S.done.indexOf(i);if(k<0){S.done.push(i);act();toast('Lesson completed!')}else{S.done.splice(k,1);save()}openL(i)}
+V.speak=()=>`<h2>Speaking</h2><div class="seg"><button class="${sp.m==='t'?'on':''}" onclick="sp.m='t';go()">Trainer</button><button class="${sp.m==='d'?'on':''}" onclick="sp.m='d';go()">Dialogues</button><button class="${sp.m==='r'?'on':''}" onclick="sp.m='r';go()">Listen and repeat</button></div><p class="note">This browser: listening ${TTS?'✅':'❌'}, speech recognition ${STT?'✅':'❌'}. Recognition needs internet and microphone permission. It shows the words the browser heard; it does not judge your pronunciation.</p>`+(sp.m==='t'?trn():sp.m==='d'?dlg():rep());
+function dlg(){if(sp.s==null)return SC.map((s,i)=>`<div class="card tap" onclick="sp.s=${i};sp.t=0;go()"><b>${s[1]} ${s[0]}</b><p><small>3 short exchanges</small></p></div>`).join('');
+const s=SC[sp.s],t=s[2][sp.t];return `<button class="back" onclick="sp.s=null;go()">← Scenarios</button><h3>${s[0]}, step ${sp.t+1} of 3</h3><div class="bub"><span>${t[0]}</span>${sb(t[0])}</div><textarea id="ans" rows="3" placeholder="Type your answer, or use the microphone"></textarea><div class="acts"><button class="b" onclick="mic(r=>{$('#ans').value=r;$('#mo').textContent='Heard: '+r},$('#mo'))">🎤 Speak</button><button class="b alt" onclick="$('#smp').hidden=false">Show sample</button></div><p id="mo" class="note"></p><div id="smp" class="card" hidden><small>Sample answer</small><div class="row" style="border:0;padding:0"><span>${t[1]}</span>${sb(t[1])}</div><small>Your own words are fine too.</small></div><button class="b" onclick="nxt()">${sp.t<2?'Next':'Finish'}</button>`}
+function nxt(){if(sp.t<2)sp.t++;else{act();toast('Dialogue complete!');sp.s=null}go()}
+function rep(){return RS.map((t,i)=>`<div class="card"><p><b>${t}</b></p><div class="acts"><button class="b sm" data-t="${t}" onclick="say(this.dataset.t)">🔊 Listen</button><button class="b sm alt" data-t="${t}" onclick="say(this.dataset.t,.55)">🐢 Slow</button><button class="b sm alt" onclick="rp(${i})">🎤 Repeat</button></div><p class="note" id="r${i}"></p></div>`).join('')}
+function rp(i){const o=$('#r'+i);mic(h=>{const A=nw(RS[i]),B=nw(h);o.textContent=`Heard: “${h}”. ${A.filter(w=>B.includes(w)).length} of ${A.length} words matched. This is a text match only, not a pronunciation score.`;act()},o)}
+function vlist(){const q=vq.toLowerCase(),r=W.filter(w=>vf(w)&&(vc==='All'||w[1]===vc)&&(w[0].includes(q)||w[2].includes(q)));return r.length?r.map(w=>`<div class="card"><div class="row" style="border:0;padding:0"><div><b>${w[0]}</b> <small>${w[1]}</small><p>${w[2]}</p><p><i>${w[3]}</i></p></div>${sb(w[0]+'. '+w[3])}</div></div>`).join(''):'<p class="note">No words found. Try another spelling or category.</p>'}
+V.vocab=()=>`<h2>Vocabulary</h2>${lvc()}<div class="chips"><button class="chip ${va?'on':''}" onclick="va=!va;vc='All';go()">Show all levels</button></div><button class="b w" onclick="startPr()">Daily practice: 5 words</button><input type="search" placeholder="Search words" value="${vq.replace(/"/g,'')}" oninput="vq=this.value;$('#vl').innerHTML=vlist()"><div class="chips">${['All',...new Set(W.filter(vf).map(w=>w[1]))].map(c=>`<button class="chip ${c===vc?'on':''}" onclick="vc='${c}';go()">${c}</button>`).join('')}</div><div id="vl">${vlist()}</div>`;
+function startPr(){pr={l:[...W].sort(()=>Math.random()-.5).slice(0,5),i:0,r:0};prv()}
+function prv(){const w=pr.l[pr.i];$('#v').innerHTML=`<button class="back" onclick="pr=null;go()">← Vocabulary</button><h3>Word ${pr.i+1} of 5</h3><div class="card c"><p class="big">${w[0]}</p>${sb(w[0])}${pr.r?`<p>${w[2]}</p><p><i>${w[3]}</i></p>`:'<p class="note">Say the meaning in your own words.</p>'}</div>`+(pr.r?`<button class="b" onclick="pn()">${pr.i<4?'Next word':'Finish'}</button>`:'<button class="b" onclick="pr.r=1;prv()">Show meaning</button>');scrollTo(0,0)}
+function pn(){if(pr.i<4){pr.i++;pr.r=0;prv()}else{act();toast('Daily practice done!');pr=null;go()}}
+V.gram=()=>{if(gi==null)return '<h2>Grammar</h2>'+G.map((g,i)=>`<div class="card tap" onclick="gi=${i};go()"><b>${g[1]} ${g[0]}</b></div>`).join('');const g=G[gi];return `<button class="back" onclick="gi=null;go()">← Topics</button><h2>${g[0]}</h2><div class="card">${g[2]}</div><h3>Practice</h3>`+g[3].map(q=>qhtml(q)).join('')};
+V.quiz=()=>{if(!qz)return `<h2>Quizzes</h2><div class="card"><p>${Q.length} multiple-choice questions with instant feedback and an explanation after each answer.</p><p>Best score: <b>${S.best==null?'not taken yet':S.best+' / '+Q.length}</b></p><button class="b" onclick="qz={i:0,s:0};go()">Start quiz</button></div>`;
+if(qz.i>=Q.length)return `<h2>Quiz complete</h2><div class="card c"><p class="big">${qz.s} / ${Q.length}</p><p>${qz.s>=8?'Excellent work!':qz.s>=5?'Good job. Read the explanations and try again.':'Keep practising. Review Lessons and Grammar, then retry.'}</p></div><button class="b" onclick="qz={i:0,s:0};go()">Try again</button><button class="b alt" onclick="qz=null;go()">Done</button>`;
+return `<small>Question ${qz.i+1} of ${Q.length}</small><div class="bar"><i style="width:${qz.i/Q.length*100}%"></i></div>`+qhtml(Q[qz.i],1)+'<div id="nx"></div>'};
+function quizAfter(ok){if(ok)qz.s++;$('#nx').innerHTML=`<button class="b" onclick="qn()">${qz.i<Q.length-1?'Next question':'See score'}</button>`}
+function qn(){qz.i++;if(qz.i>=Q.length){S.best=Math.max(S.best||0,qz.s);S.scores.push(qz.s);act()}go()}
+V.prog=()=>{const n=nDay();return `<h2>Progress</h2><div class="grid2"><div class="card c"><p class="big">${S.done.length}/${L.length}</p><small>Lessons completed</small></div><div class="card c"><p class="big">🔥 ${streak()}</p><small>Day streak</small></div><div class="card c"><p class="big">${S.best==null?'–':S.best+'/'+Q.length}</p><small>Best quiz score</small></div><div class="card c"><p class="big">${Object.keys(S.days).length}</p><small>Days practised</small></div><div class="card c"><p class="big">${S.tr.filter(i=>TR[i][1]!=='P').length}/${TR.filter(t=>t[1]!=='P').length}</p><small>Speaking lessons done</small></div></div>
+${wk()}<div class="card"><b>Daily goal: ${n} of ${S.goal} activities</b><div class="bar"><i style="width:${Math.min(100,n/S.goal*100)}%"></i></div><div class="chips">${[3,5,10].map(g=>`<button class="chip ${S.goal===g?'on':''}" onclick="S.goal=${g};save();go()">${g} a day</button>`).join('')}</div><small>An activity is a finished lesson, dialogue, repeat try, grammar answer, practice round or quiz.</small></div>
+<div class="card"><b>Recent quiz scores</b><p>${S.scores.length?S.scores.slice(-5).join(', '):'No quizzes yet.'}</p></div>
+<div class="card"><b>About your data</b><p><small>Progress is saved only in this browser on this phone (local storage). It is not backed up or shared. Clearing browser data or using private mode can erase it. Cloud accounts are a planned future step.</small></p><button class="b alt" onclick="rst(this)">Reset progress</button></div>`};
+function rst(b){if(b.dataset.c){S=D();save();go()}else{b.dataset.c=1;b.textContent='Tap again to erase everything'}}
+
+/* ===== SPEAKING TRAINER ===== */
+const vlv=w=>w[1]==='Advanced'?'C':w[1]==='Travel'||w[1]==='Work'?'B':'A',vf=w=>va||vlv(w)===S.lv;
+const TR=[
+['Introductions','A',[['Hello, my name is Sara. Nice to meet you.','Introduce yourself: say your name and your country.','Hello, my name is Ali. I am from Brazil.','Say “I am from…” for your country.'],['I work as a teacher in a small school.','What is your job?','I am a student.','Use “a” before a job: I am a nurse.']]],
+['Shopping','A',[['How much is this jacket?','Ask the price of a shirt.','How much is this shirt?','Use “How much” for prices and “How many” for numbers.'],['Do you have this in a larger size?','Ask for a smaller size.','Do you have this in a smaller size?','“Do you have…?” is polite and clear.']]],
+['Restaurant Orders','A',[['I would like a glass of water, please.','Order a cup of tea politely.','I would like a cup of tea, please.','“I would like” sounds more polite than “I want”.'],['Could we have the bill, please?','Ask for the bill.','Could I have the bill, please?','Use “Could” for polite requests.']]],
+['Asking for Directions','A',[['Excuse me, where is the bus station?','Ask where the train station is.','Excuse me, where is the train station?','Start with “Excuse me” to get attention politely.'],['I would like a ticket to London, please.','Ask for a ticket to your city.','I would like a ticket to Paris, please.','Use “a ticket to + place”.']]],
+['Restaurant Problems','B',[['Excuse me, this is not what I ordered.','Say your soup is cold and ask for help.','Excuse me, my soup is cold. Could you heat it, please?','Say “Excuse me”, the problem, then “Could you…?”.'],['Do you have any vegetarian dishes?','Ask for dishes without meat.','Do you have any vegetarian dishes?','Use “any” in questions.']]],
+['Job Interview','B',[['I have three years of experience in customer service.','Describe your work experience.','I have two years of experience in sales.','Use “I have” + number of years + “of experience”.'],['My greatest strength is solving problems calmly.','What is your greatest strength?','My greatest strength is working well in a team.','After “is”, use an -ing form: My strength is learning fast.']]],
+['Workplace Meeting','B',[['Could we move the meeting to Thursday?','Ask to move a meeting to Friday.','Could we move the meeting to Friday morning?','“Could we…?” is a polite suggestion at work.'],['I will send you the report by tomorrow.','Promise to send a file by Monday.','I will send you the file by Monday.','Use “will” for promises and “by” for deadlines.']]],
+['Travel Problems','B',[['My luggage is missing. Could you help me?','Say your flight is delayed and ask for help.','My flight is delayed. Could you help me, please?','Say the problem first, then ask for help.'],['Could you tell me how to get to the hotel?','Ask how to get to your hotel.','Could you tell me how to get to the Grand Hotel?','After “Could you tell me”, use normal word order: how to get.']]],
+['Making Friends','B',[['Would you like to have coffee this weekend?','Invite a friend to lunch.','Would you like to have lunch with me on Saturday?','“Would you like to…?” is a friendly invitation.'],['What do you do in your free time?','Talk about your hobbies.','In my free time, I play football and read books.','Use present simple for hobbies and routines.']]],
+['Polite Disagreement','C',[['I see your point, but I have a different view.','Disagree politely with a colleague’s plan.','I see your point, but I think we should wait.','Acknowledge first, then give your view.'],['Could you elaborate on that?','Ask a colleague for more detail.','Could you elaborate on the budget?','“Elaborate on” is a formal way to ask for more detail.']]],
+['Negotiating','C',[['I would agree if you could lower the price.','Say you can agree if the deadline changes.','I would agree if you could extend the deadline.','Use “would… if…” for polite conditions.'],['Let me think about it and get back to you.','Say you need time to decide.','I need more time. I will get back to you tomorrow.','“Get back to you” means reply later.']]],
+['Presentations','C',[['Today I would like to talk about three main points.','Open a talk about healthy eating.','Today I will talk about healthy eating.','Name the topic, then say how many points you will cover.'],['To sum up, we should focus on quality.','Close a talk with a summary.','To sum up, we should start next week.','“To sum up” signals your final summary.']]]];
+const ER=[[/\bi am agree\b/i,'Say “I agree”, not “I am agree”.'],[/\b(he|she|it) (don[’']t|have)\b/i,'With he/she/it, use “doesn’t” and “has”.'],[/\bi am (go|work|live|study|eat|play)\b/i,'After “I am”, use an -ing verb (I am working), or drop “am” (I work).'],[/\bmore better\b/i,'Say “better”, not “more better”.'],[/\bi want\b/i,'“I want” can sound too direct. Try “I would like”.'],[/\bi have \d+ years\b(?! of)/i,'For age, say “I am 20 years old”.']];
+let sv=0;
+function startSp(){sp.m='t';const i=TR.findIndex((t,k)=>t[1]===S.lv&&!S.tr.includes(k));sp.tl=i<0?TR.findIndex(t=>t[1]===S.lv):i;sp.ts=0;go('speak')}
+function trn(){if(sp.tl==null)return lvc()+TR.map((t,i)=>t[1]===S.lv?`<div class="card tap" onclick="sp.tl=${i};sp.ts=0;go()"><b>${S.tr.includes(i)?'✅ ':''}${t[0]}</b><p><small>${t[2].length} sentences with practice questions</small></p></div>`:'').join('');
+const t=TR[sp.tl],s=t[2][sp.ts];sv=0;return `<button class="back" onclick="sp.tl=null;go()">← Speaking lessons</button><h3>${t[0]}, sentence ${sp.ts+1} of ${t[2].length}</h3><div class="card"><small>Step 1: listen and repeat</small><p style="font-size:20px;font-weight:600">${s[0]}</p><div class="acts"><button class="b sm" data-t="${s[0]}" onclick="say(this.dataset.t)">🔊 Listen</button><button class="b sm alt" data-t="${s[0]}" onclick="say(this.dataset.t,.55)">🐢 Slow</button><button class="b sm alt" onclick="trp()">🎤 Repeat</button></div><p class="note" id="rh"></p></div><div class="card"><small>Step 2: practice question</small><p><b>${s[1]}</b></p><textarea id="ans" rows="2" oninput="sv=0" placeholder="Type your answer, or use the microphone"></textarea><div class="acts"><button class="b sm alt" onclick="mic(r=>{$('#ans').value=r;sv=1;$('#mo').textContent='Heard: '+r},$('#mo'))">🎤 Speak answer</button><button class="b sm" onclick="chk()">Check my answer</button></div><p class="note" id="mo"></p><div id="fbk"></div></div><button class="b" onclick="tnx()">${sp.ts<t[2].length-1?'Next sentence':'Finish lesson'}</button>`}
+function trp(){const o=$('#rh'),g=TR[sp.tl][2][sp.ts][0];mic(h=>{const A=nw(g),B=nw(h),x=A.filter(w=>!B.includes(w));o.innerHTML=`Heard: “${h}”<br>${A.length-x.length} of ${A.length} words matched.`+(x.length?` Not heard: ${x.join(', ')}. Listen again and repeat more slowly.`:' Every word was heard. Well done!')+'<br>This compares written words only. It is not a pronunciation score.';act()},o)}
+function chk(){const a=$('#ans').value.trim(),s=TR[sp.tl][2][sp.ts],f=[];if(!a){$('#fbk').innerHTML='<p class="fb">Type or say an answer first.</p>';return}
+if(a.split(/\s+/).length<3)f.push('Try a full sentence with at least 3 words.');
+if(!sv){if(/(^|[\s,])i(\s|'|’|$)/.test(a))f.push('Write “I” with a capital letter.');if(/^[a-z]/.test(a))f.push('Start your sentence with a capital letter.');if(!/[.!?]$/.test(a))f.push('End your sentence with . ! or ?')}
+ER.forEach(e=>{if(e[0].test(a))f.push(e[1])});act();
+$('#fbk').innerHTML=`<p class="fb">${f.length?'Suggestions':'✅ No common mistakes found'}</p>`+f.map(x=>`<p>${x}</p>`).join('')+`<div class="bub"><span><small>Example answer</small><br>${s[2]}</span>${sb(s[2])}</div><p><small>Tip: ${s[3]}</small></p><p class="note">These are basic automatic checks for common mistakes, not a full grammar check.</p>`}
+function tnx(){const t=TR[sp.tl];scrollTo(0,0);if(sp.ts<t[2].length-1){sp.ts++}else{if(!S.tr.includes(sp.tl))S.tr.push(sp.tl);act();toast('Speaking lesson complete!');sp.tl=null}go()}
+
+/* ===== BUSINESS LAYER: free plan, premium preview, feedback, privacy, launch roadmap ===== */
+TR.push(
+['Advanced: Debating Ideas','P',[['I partly agree, although I think the risks are underestimated.','Give a balanced opinion on working from home.','I partly agree, although working from home can feel lonely.','Use “although” to show two sides in one sentence.'],['Let me put it another way.','Rephrase an idea you said before.','Let me put it another way: we need more time.','Rephrasing keeps the conversation clear.']]],
+['Advanced: Networking Small Talk','P',[['What brings you to this event?','Introduce yourself at a conference.','Hi, I’m Sam. I work in marketing. What about you?','Share one fact, then ask a question.'],['It was great catching up with you.','End a conversation politely.','It was great meeting you. Let’s stay in touch.','Close with a positive sentence and a next step.']]],
+['Advanced: Handling Complaints','P',[['I apologise for the inconvenience, and I will fix it today.','Reply to a customer whose order is late.','I’m sorry for the delay. I’ll check your order now.','Apologise, then say what you will do.'],['Could you walk me through what happened?','Ask a customer to explain a problem.','Could you tell me what happened, please?','“Walk me through” asks for a step-by-step explanation.']]],
+['Interview: Tell Me About Yourself','P',[['I am a project coordinator with five years of experience in logistics.','Introduce your career in two sentences.','I am an accountant with four years of experience. I enjoy solving problems.','Say who you are, what you did and what you want next.'],['I am looking for a role where I can grow.','Say why you want this job.','I am looking for a role where I can use my skills and learn more.','Link your goal to the company’s needs.']]],
+['Interview: Difficult Questions','P',[['One weakness is that I sometimes take on too much, so I now plan my week carefully.','Answer: what is your weakness?','One weakness is that I get nervous when speaking, so I practise every day.','Name a real weakness, then show how you improve.'],['In a previous job, I solved a conflict by listening to both sides.','Describe a time you solved a problem.','Once, I solved a problem by talking to my team.','Use a short story: situation, action, result.']]],
+['Interview: Questions and Salary','P',[['Could you tell me more about the team I would be working with?','Ask the interviewer one question.','Could you tell me what a typical day looks like?','Prepare one or two questions in advance.'],['I would like to discuss the salary range for this role.','Raise salary politely.','I would like to talk about the salary range for this role.','Be polite, specific and calm.']]]);
+const C30='Greetings;Introductions;Small talk;Numbers and prices;Shopping;Asking for help;Directions;Public transport;Airport;Hotel check-in;Restaurant orders;Food problems;Phone calls;Appointments;Health and doctor;Daily routines;Past events;Future plans;Opinions;Agreeing and disagreeing;Workplace meetings;Talking about work emails;Job interview basics;Interview stories;Negotiation;Presentations;Complaints;Making friends;Idioms;Review and final speaking test'.split(';');
+const PL=[['Meet and greet',0,0],['Shop with confidence',3,1],['Order food and drinks',4,2],['Ask for directions',5,3],['Past stories and polite problems',6,4],['Prepare for work',7,5],['Introduce yourself and make friends',1,8]];
+const FT=['Job interviews','Travel English','Business English','Pronunciation help','Grammar','Exam preparation'];
+let mm='f',pm='p',fs=[];
+function planSp(i){sp.m='t';sp.tl=i;sp.ts=0;go('speak')}
+function pdn(k){const j=S.pl.indexOf(k);if(j<0){S.pl.push(k);act();toast('Day complete!')}else S.pl.splice(j,1);save();go()}
+function cdn(k){const j=S.c30.indexOf(k);if(j<0){S.c30.push(k);act();toast('Course day done!')}else S.c30.splice(j,1);save();go()}
+V.plan=()=>{const c=PL.findIndex((p,k)=>!S.pl.includes(k)),t=TR[PL[c<0?0:c][2]];return `<h2>Free 7-day plan</h2><p><small>Free for everyone. About 10 minutes a day.</small></p>`+(c<0?'<div class="card"><b>🎉 Plan complete!</b><p>Repeat any day, or try the Speaking trainer for your level.</p></div>':`<div class="card" style="border-color:var(--pri)"><small>Today’s speaking practice, day ${c+1}</small><div class="row" style="border:0;padding:0"><b>${t[2][0][0]}</b>${sb(t[2][0][0])}</div><button class="b sm" onclick="planSp(${PL[c][2]})">🎤 Practise speaking</button></div>`)+PL.map((p,k)=>`<div class="card"><b>${S.pl.includes(k)?'✅ ':''}Day ${k+1}: ${p[0]}</b><div class="acts"><button class="b sm alt" onclick="openL(${p[1]})">Read lesson</button><button class="b sm alt" onclick="planSp(${p[2]})">Speak</button><button class="b sm" onclick="pdn(${k})">${S.pl.includes(k)?'Undo':'Mark day done'}</button></div></div>`).join('')};
+function premL(){const li=f=>TR.map((t,i)=>t[1]==='P'&&f(t[0])?`<div class="card tap" onclick="planSp(${i})"><b>${S.tr.includes(i)?'✅ ':''}${t[0].replace(/^[^:]+: /,'')}</b><p><small>${t[2].length} sentences with practice questions</small></p></div>`:'').join('');
+return `<h3>Advanced conversation lessons</h3>${li(n=>n.startsWith('Advanced'))}<h3>Job interview practice</h3>${li(n=>n.startsWith('Interview'))}<h3>30-day speaking course</h3><p class="note">Outline only. Each day: learn 5 phrases on the topic, say them aloud 3 times, write 2 sentences, then use the trainer. Full audio-led lessons for each day still need to be written. Done: ${S.c30.length} of 30.</p>`+C30.map((t,k)=>`<div class="row"><span>Day ${k+1}: ${t}</span><button class="chip ${S.c30.includes(k)?'on':''}" onclick="cdn(${k})">${S.c30.includes(k)?'Done':'Mark done'}</button></div>`).join('')}
+function cmpT(){const R=[['Beginner to advanced lessons','✅','✅'],['Speaking trainer (12 levelled lessons)','✅','✅'],['Daily speaking practice and 7-day plan','✅','✅'],['Vocabulary, grammar and quizzes','✅','✅'],['Progress and streaks on this device','✅','✅'],['Advanced conversation lessons (3)','—','✅'],['Job interview practice (3)','—','✅'],['30-day speaking course','—','✅ outline'],['Accounts and cloud progress','—','🕒'],['AI conversation partner','—','🕒']];
+return `<div class="card" style="overflow-x:auto"><table class="tb"><tr><th>Feature</th><th>Free</th><th>Premium</th></tr>${R.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table></div><p class="note">✅ exists in this app now. 🕒 planned, not built. Which features become paid is your business decision. Nothing can be bought and no money is collected.</p>`}
+V.prem=()=>{if(!Access.canUse())return '<h2>Premium</h2><div class="card">Premium is locked.</div>';return `<h2>⭐ Premium preview</h2><div class="card" style="border-color:var(--pri)"><b>Preview only: not for sale</b><p><small>Payments are not set up. These features are unlocked free so you can test them. Real subscriptions need the services listed under More, Launch needs.</small></p></div><div class="seg"><button class="${pm==='p'?'on':''}" onclick="pm='p';go()">Premium lessons</button><button class="${pm==='c'?'on':''}" onclick="pm='c';go()">Free or paid?</button></div>`+(pm==='p'?premL():cmpT())};
+const ftx=()=>'Wants: '+(fs.map(i=>FT[i]).join(', ')||'(none chosen)')+' | Note: '+($('#ft').value.trim()||'(none)');
+function ftg(i){const k=fs.indexOf(i);k<0?fs.push(i):fs.splice(k,1);const t=$('#ft').value;go();$('#ft').value=t}
+function fsv(){if(!fs.length&&!$('#ft').value.trim()){toast('Choose a topic or write a note first.');return}S.fb.push({d:today(),x:ftx()});save();fs=[];toast('Feedback saved on this device.');go()}
+function fcp(){try{navigator.clipboard.writeText(ftx()).then(()=>toast('Copied. Paste it into a message.'),()=>toast('Copy is not available here. Select the text and copy it manually.'))}catch(e){toast('Copy is not available here.')}}
+function fform(){return `<div class="card"><b>What do you want to learn next?</b><div class="chips">${FT.map((t,i)=>`<button class="chip ${fs.includes(i)?'on':''}" onclick="ftg(${i})">${t}</button>`).join('')}</div><textarea id="ft" rows="4" placeholder="Anything else you want to learn or improve?"></textarea><div class="acts"><button class="b sm" onclick="fsv()">Save on this device</button><button class="b sm alt" onclick="fcp()">Copy to share</button></div><p class="note">Saved feedback stays on this phone. The app has no server yet, so nothing is sent to anyone. Copy it and send it to the app owner. Saved so far: ${S.fb.length}.</p></div>`}
+const privH=()=>`<div class="card"><b>What this app stores</b><p>Your level, completed lessons, quiz scores, daily activity counts, streak, daily goal, plan progress and any feedback you save. It is stored in this browser on this device (local storage).</p></div><div class="card"><b>What it does not do</b><p>It has no accounts, no payments, no ads, no analytics and does not collect your name or email. It does not record or store your voice.</p></div><div class="card"><b>Third parties</b><p>The microphone feature uses your browser’s speech recognition. In Chrome on Android, your audio may be sent to the browser maker’s speech service, so it needs internet. Text-to-speech uses voices on your phone. The page loads a font from Google Fonts.</p></div><div class="card"><b>Your control</b><p>Use Reset progress on the Progress page to erase saved data. Clearing browser data also removes it.</p><p class="note">This is a plain-language summary for the prototype, not a legal policy. Get a proper privacy policy before launching to the public.</p></div>`;
+const road=()=>[['User accounts','A sign-in service such as Firebase Authentication or Supabase Auth (both have free tiers). Never store passwords yourself.'],['Cloud progress and feedback','A database and a small server so progress syncs across devices and feedback reaches you. Today everything is local.'],['Payments','A payment provider (for example Stripe on the web, or Google Play Billing inside an Android app). The provider shows its own checkout, so card details never touch this app. A server must confirm a paid subscription before unlocking Premium. Providers charge fees per sale.'],['Premium content','The 30-day course needs full lessons written and checked. Premium lessons should be served only to paying users from the server, not hidden in the page.'],['Legal and privacy','A real privacy policy, terms of use and refund policy, reviewed for the countries you sell in.'],['Android distribution','Install-to-home-screen (PWA) is free. Google Play needs a developer account with a one-time fee.'],['Advertising','Only through a real provider such as AdMob, after approval. None is included.']].map(x=>`<div class="card"><b>${x[0]}</b><p>${x[1]}</p></div>`).join('')+'<p class="note">In the code: Store (saving), Access (what is unlocked) and the content lists are separate so accounts, payments and cloud sync can be added without a rewrite.</p>';
+V.more=()=>`<h2>More</h2><div class="card"><b>Test the app and suggest improvements</b><p><small>Your ideas shape what we build next. The button opens an online Google Form. Google handles what you submit there. Never enter passwords or payment details.</small></p><button class="b" onclick="fbk()">Give Feedback</button></div><div class="seg">${[['f','Feedback'],['p','Privacy'],['r','Launch needs']].map(x=>`<button class="${mm===x[0]?'on':''}" onclick="mm='${x[0]}';go()">${x[1]}</button>`).join('')}</div>`+(mm==='f'?fform():mm==='p'?privH():road());
+function wk(){let h='',tot=0;for(let k=6;k>=0;k--){const d=new Date(Date.now()-k*864e5),c=S.days[d.toISOString().slice(0,10)]||0;tot+=c;h+=`<div style="flex:1;text-align:center"><div style="height:64px;display:flex;align-items:flex-end"><i style="display:block;width:100%;border-radius:6px 6px 0 0;background:var(--pri);height:${Math.max(c?8:3,Math.min(100,c/S.goal*100))}%;opacity:${c?1:.25}"></i></div><small>${'SMTWTFS'[d.getUTCDay()]}</small></div>`}
+const n=nDay(),m=n===0?'Do one activity today to keep your streak alive.':n<S.goal?`${S.goal-n} more to reach today’s goal.`:'Goal complete! Come back tomorrow to continue your streak.';
+return `<div class="card"><b>Last 7 days</b><div style="display:flex;gap:6px;margin:10px 0">${h}</div><p>${tot} activities this week. ${m}</p><button class="b sm" onclick="go('plan')">Continue your plan</button></div>`}
+
+/* ===== FEEDBACK FORM LINK: replace the text below with your Google Form link ===== */
+const FORM_URL='https://docs.google.com/forms/d/e/1FAIpQLScErgqfqjps4MMAjPmqI3Qs6yeinAgXBh0OWqKd0ORCuBcrWw/viewform?usp=dialog';
+const formOk=()=>/^https:\/\/(docs\.google\.com\/forms\/|forms\.gle\/)/.test(FORM_URL);
+function fbk(){if(!formOk()){mm='f';go('more');toast('The online form link is not set yet. You can save feedback on this phone for now.');return}const w=window.open(FORM_URL,'_blank');if(w)w.opener=null;else fbBox()}
+function fbBox(){let d=$('#fbx');if(d)d.remove();d=document.createElement('div');d.id='fbx';d.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:30;display:flex;align-items:center;justify-content:center;padding:16px';d.innerHTML=`<div class='card' style='max-width:420px;width:100%'><b>Open the feedback form</b><p><small>This preview window blocks new tabs. Tap the link below, or copy it and paste it into Chrome.</small></p><p><a href='${FORM_URL}' target='_blank' rel='noopener' style='color:var(--pri);font-weight:600'>Open the form</a></p><input id='fu' readonly value='${FORM_URL}' onfocus='this.select()' style='width:100%;box-sizing:border-box;font:inherit;font-size:12px;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)'><div class='acts'><button class='b sm' onclick='fcp()'>Copy link</button><button class='b sm alt' onclick='fcl()'>Close</button></div><p class='note' id='fcm'></p></div>`;document.body.appendChild(d)}
+function fcl(){const d=$('#fbx');if(d)d.remove()}
+function fcp(){const i=$('#fu'),m=$('#fcm');i.select();const man=()=>{try{document.execCommand('copy')}catch(x){}m.textContent='Link selected. If it did not copy, long-press it and tap Copy.'};try{navigator.clipboard.writeText(FORM_URL).then(()=>m.textContent='Link copied. Paste it into Chrome.',man)}catch(e){man()}}
+
+/* ===== MORE SENTENCES: every speaking lesson grows to 10 (format: sentence|question|sample answer) ===== */
+const MORE=[`Good morning, everyone. My name is Ali.|Greet a group and say your name.|Good morning, everyone. My name is Sara.
+How do you spell your name?|Spell your name aloud.|It is S-A-R-A.
+I am twenty-five years old.|Say how old you are.|I am thirty years old.
+I live in a small town near the city.|Say where you live.|I live in a big city.
+I have two brothers and one sister.|Talk about your family.|I have one brother and two sisters.
+I am married, and I have a son.|Say if you are married or single.|I am single, and I live with my parents.
+I speak Arabic and a little English.|Say which languages you speak.|I speak Urdu and a little English.
+It was nice talking to you. See you soon!|Say goodbye politely.|Nice to meet you. Goodbye!`,
+`Excuse me, where can I find the shoes?|Ask where an item is.|Excuse me, where can I find the bags?
+Can I try this on, please?|Ask to try clothes on.|Can I try these shoes on, please?
+It is too big. Do you have a smaller one?|Say it is too big.|It is too big. Do you have a smaller one?
+That is too expensive for me.|Say a price is too high.|That is too expensive. Do you have a cheaper one?
+Is there a discount on this?|Ask about a discount.|Is there a discount on this shirt?
+I will pay in cash.|Say how you will pay.|I will pay by card, please.
+Could I have a bag, please?|Ask for a shopping bag.|Could I have a bag, please?
+Can I return this if it does not fit?|Ask about returns.|Can I return this if I do not like it?`,
+`A table for two, please.|Ask for a table for three.|A table for three, please.
+Could I see the menu, please?|Ask for the menu.|Could I see the menu, please?
+What do you recommend?|Ask the waiter for advice.|What do you recommend for dinner?
+I will have the fish with rice.|Order a main dish.|I will have the chicken with salad.
+Can I have it without onions?|Ask to remove an ingredient.|Can I have it without nuts?
+Could we have some more water, please?|Ask for more of something.|Could we have some more bread, please?
+Everything was delicious, thank you.|Praise the food.|The food was great, thank you.
+Is service included in the bill?|Ask about the service charge.|Is service included in the bill?`,
+`Is the station far from here?|Ask if a place is far.|Is the bank far from here?
+Turn left at the traffic light.|Tell someone to turn right.|Turn right at the traffic light.
+Go straight for two blocks.|Tell someone to go straight.|Go straight for three blocks.
+It is next to the post office.|Say where a shop is.|It is next to the supermarket.
+Can you show me on the map?|Ask for help with a map.|Can you show me on the map, please?
+How long does it take to walk there?|Ask how long it takes.|How long does it take by bus?
+Which bus goes to the airport?|Ask which bus to take.|Which bus goes to the city center?
+Thank you so much for your help.|Thank the person.|Thank you so much for your help.`,
+`I ordered the soup, but you brought a salad.|Say the order is wrong.|I ordered tea, but you brought coffee.
+The meat is not cooked enough.|Complain about the food.|The rice is cold. Could you change it?
+We have been waiting for forty minutes.|Complain about waiting.|We have been waiting for a long time.
+Could you check our order, please?|Ask the waiter to check.|Could you check our order, please?
+I think there is a mistake on the bill.|Point out a bill mistake.|I think there is a mistake on the bill.
+I am allergic to nuts. Does this dish contain any?|Ask about allergies.|I am allergic to milk. Does this contain any?
+Could I speak to the manager, please?|Ask for the manager politely.|Could I speak to the manager, please?
+Thank you for fixing the problem.|Thank the staff.|Thank you for fixing the problem.`,
+`Thank you for inviting me to this interview.|Start the interview politely.|Thank you for seeing me today.
+I graduated from university three years ago.|Talk about your education.|I finished college two years ago.
+I am good at teamwork and communication.|Name two skills.|I am good at planning and solving problems.
+In my last job, I managed a small team.|Describe your last job.|In my last job, I helped customers every day.
+I left because I wanted new challenges.|Say why you left your job.|I left because I wanted to learn more.
+I can start work within two weeks.|Say when you can start.|I can start next month.
+What are the working hours for this role?|Ask about working hours.|What are the working hours for this job?
+Thank you for your time. I look forward to hearing from you.|End the interview politely.|Thank you for your time. I hope to hear from you soon.`,
+`Let’s start the meeting. Does everyone have the agenda?|Open a meeting.|Let’s begin. Does everyone have the agenda?
+I would like to give a quick update on my project.|Start an update.|I would like to update you on my task.
+We are on track to finish by Friday.|Say the project is on time.|We are on track to finish next week.
+We are a little behind schedule.|Say you are late.|We are a little behind because of delays.
+Could you share your screen, please?|Ask a colleague to share a screen.|Could you share your screen, please?
+Sorry, could you repeat that?|Ask someone to repeat.|Sorry, could you say that again?
+I will follow up with an email after the meeting.|Promise a follow-up.|I will email you the notes after the meeting.
+Thanks, everyone. That is all for today.|Close the meeting.|Thanks, everyone. The meeting is finished.`,
+`I would like to report a lost bag.|Report a lost bag.|I would like to report a lost suitcase.
+My bag has a red tag and a blue strap.|Describe your bag.|My bag is black with a small tag.
+When is the next flight to Dubai?|Ask about the next flight.|When is the next flight to Istanbul?
+I missed my connecting flight.|Say you missed a flight.|I missed my train. What should I do?
+Can I change my ticket to tomorrow?|Ask to change a ticket.|Can I change my ticket to Friday?
+Is breakfast included in the room price?|Ask about the hotel.|Is breakfast included in the price?
+The air conditioner in my room is not working.|Report a hotel problem.|The shower in my room is not working.
+Could you call a taxi for me, please?|Ask for a taxi.|Could you call a taxi to the airport?`,
+`I have just moved to this city.|Say you are new here.|I have just moved here for work.
+What kind of music do you like?|Ask about music.|What kind of movies do you like?
+I enjoy cooking and watching football.|Talk about your hobbies.|I enjoy reading and walking.
+Do you want to join us for dinner?|Invite someone to dinner.|Do you want to join us for lunch?
+That sounds great. What time shall we meet?|Accept an invitation.|That sounds great. Where shall we meet?
+I am sorry, I can’t come, but thanks for asking.|Decline politely.|Sorry, I can’t come, but thank you.
+Let’s keep in touch. What is your number?|Ask for contact details.|Let’s keep in touch. Can I have your number?
+I had a great time today.|Say you enjoyed the day.|I had a wonderful evening.`,
+`I am afraid I don’t quite agree with that.|Disagree gently.|I am afraid I don’t completely agree.
+That is an interesting idea, but it may be risky.|Praise an idea, then raise a concern.|That is a good idea, but it may be expensive.
+Have we considered the long-term costs?|Raise a concern as a question.|Have we considered the risks?
+With respect, I see it differently.|Disagree respectfully.|With respect, I see it differently.
+Perhaps we could find a middle ground.|Suggest a compromise.|Perhaps we could meet halfway.
+Could you give me an example to clarify your point?|Ask for an example.|Could you give an example, please?
+I take your point, and I would like to add something.|Accept a point and add your own.|I take your point, and I would add one thing.
+Let’s agree to disagree and move on.|End a debate calmly.|Let’s agree to disagree and move on.`,
+`What is the best price you can offer?|Ask for the best price.|What is the best price you can offer me?
+We were hoping for a slightly lower figure.|Ask for a lower price.|We were hoping for a lower price.
+If we order more, would you offer a discount?|Offer a bigger order for a deal.|If we sign for a year, could you reduce the price?
+I am afraid that is beyond our budget.|Say it is too expensive.|I am afraid that is over our budget.
+Could we split the difference?|Suggest a compromise.|Could we meet in the middle?
+That works for us, provided delivery is on time.|Accept with a condition.|That works for us, as long as delivery is fast.
+Can we put that in writing?|Ask for a written agreement.|Can we put that in writing, please?
+It has been a pleasure doing business with you.|End the deal politely.|It was a pleasure working with you.`,
+`Good afternoon, and thank you for coming.|Greet the audience.|Good morning, and thank you for coming.
+My name is Ali, and I will be your speaker today.|Introduce yourself.|My name is Sara, and I will be speaking today.
+Let me start with some background.|Begin your first point.|Let me begin with the main problem.
+As you can see on this slide, sales have grown.|Point to a slide.|As you can see on this slide, costs have fallen.
+This brings me to my second point.|Move to the next point.|Now let me move to the next point.
+Let me give you a quick example.|Introduce an example.|Let me give you a short example.
+In conclusion, we recommend this plan.|Start your conclusion.|In conclusion, I suggest we start now.
+Thank you for listening. Are there any questions?|End and invite questions.|Thank you for listening. Do you have any questions?`];
+MORE.forEach((b,i)=>b.split('\n').forEach(l=>{const p=l.split('|');TR[i][2].push([p[0],p[1],p[2],'Say it aloud twice, then answer in your own words.'])}));
+
+/* ===== ROUTER ===== */
+const T=[['home','🏠','Home'],['lessons','📘','Lessons'],['speak','🎙️','Speaking'],['vocab','🔤','Vocabulary'],['gram','✏️','Grammar'],['quiz','🧠','Quizzes'],['prog','📈','Progress'],['plan','📅','Free plan'],['prem','⭐','Premium'],['more','ℹ️','More']];
+$('#nav').innerHTML=T.map(t=>`<button data-n="${t[0]}" onclick="go('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join('');
+function go(n){if(n&&n!==cur){cur=n;scrollTo(0,0)}$('#v').innerHTML=V[cur]();document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.n===cur));$('#lvb').textContent=LV[S.lv]}
+go('home');
+</script></body></html>
