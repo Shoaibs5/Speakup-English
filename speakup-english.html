@@ -241,6 +241,105 @@ function fbBox(){let d=$('#fbx');if(d)d.remove();d=document.createElement('div')
 function fcl(){const d=$('#fbx');if(d)d.remove()}
 function fcp(){const i=$('#fu'),m=$('#fcm');i.select();const man=()=>{try{document.execCommand('copy')}catch(x){}m.textContent='Link selected. If it did not copy, long-press it and tap Copy.'};try{navigator.clipboard.writeText(FORM_URL).then(()=>m.textContent='Link copied. Paste it into Chrome.',man)}catch(e){man()}}
 
+/* ===== MORE SENTENCES: every speaking lesson grows to 10 (format: sentence|question|sample answer) ===== */
+const MORE=[`Good morning, everyone. My name is Ali.|Greet a group and say your name.|Good morning, everyone. My name is Sara.
+How do you spell your name?|Spell your name aloud.|It is S-A-R-A.
+I am twenty-five years old.|Say how old you are.|I am thirty years old.
+I live in a small town near the city.|Say where you live.|I live in a big city.
+I have two brothers and one sister.|Talk about your family.|I have one brother and two sisters.
+I am married, and I have a son.|Say if you are married or single.|I am single, and I live with my parents.
+I speak Arabic and a little English.|Say which languages you speak.|I speak Urdu and a little English.
+It was nice talking to you. See you soon!|Say goodbye politely.|Nice to meet you. Goodbye!`,
+`Excuse me, where can I find the shoes?|Ask where an item is.|Excuse me, where can I find the bags?
+Can I try this on, please?|Ask to try clothes on.|Can I try these shoes on, please?
+It is too big. Do you have a smaller one?|Say it is too big.|It is too big. Do you have a smaller one?
+That is too expensive for me.|Say a price is too high.|That is too expensive. Do you have a cheaper one?
+Is there a discount on this?|Ask about a discount.|Is there a discount on this shirt?
+I will pay in cash.|Say how you will pay.|I will pay by card, please.
+Could I have a bag, please?|Ask for a shopping bag.|Could I have a bag, please?
+Can I return this if it does not fit?|Ask about returns.|Can I return this if I do not like it?`,
+`A table for two, please.|Ask for a table for three.|A table for three, please.
+Could I see the menu, please?|Ask for the menu.|Could I see the menu, please?
+What do you recommend?|Ask the waiter for advice.|What do you recommend for dinner?
+I will have the fish with rice.|Order a main dish.|I will have the chicken with salad.
+Can I have it without onions?|Ask to remove an ingredient.|Can I have it without nuts?
+Could we have some more water, please?|Ask for more of something.|Could we have some more bread, please?
+Everything was delicious, thank you.|Praise the food.|The food was great, thank you.
+Is service included in the bill?|Ask about the service charge.|Is service included in the bill?`,
+`Is the station far from here?|Ask if a place is far.|Is the bank far from here?
+Turn left at the traffic light.|Tell someone to turn right.|Turn right at the traffic light.
+Go straight for two blocks.|Tell someone to go straight.|Go straight for three blocks.
+It is next to the post office.|Say where a shop is.|It is next to the supermarket.
+Can you show me on the map?|Ask for help with a map.|Can you show me on the map, please?
+How long does it take to walk there?|Ask how long it takes.|How long does it take by bus?
+Which bus goes to the airport?|Ask which bus to take.|Which bus goes to the city center?
+Thank you so much for your help.|Thank the person.|Thank you so much for your help.`,
+`I ordered the soup, but you brought a salad.|Say the order is wrong.|I ordered tea, but you brought coffee.
+The meat is not cooked enough.|Complain about the food.|The rice is cold. Could you change it?
+We have been waiting for forty minutes.|Complain about waiting.|We have been waiting for a long time.
+Could you check our order, please?|Ask the waiter to check.|Could you check our order, please?
+I think there is a mistake on the bill.|Point out a bill mistake.|I think there is a mistake on the bill.
+I am allergic to nuts. Does this dish contain any?|Ask about allergies.|I am allergic to milk. Does this contain any?
+Could I speak to the manager, please?|Ask for the manager politely.|Could I speak to the manager, please?
+Thank you for fixing the problem.|Thank the staff.|Thank you for fixing the problem.`,
+`Thank you for inviting me to this interview.|Start the interview politely.|Thank you for seeing me today.
+I graduated from university three years ago.|Talk about your education.|I finished college two years ago.
+I am good at teamwork and communication.|Name two skills.|I am good at planning and solving problems.
+In my last job, I managed a small team.|Describe your last job.|In my last job, I helped customers every day.
+I left because I wanted new challenges.|Say why you left your job.|I left because I wanted to learn more.
+I can start work within two weeks.|Say when you can start.|I can start next month.
+What are the working hours for this role?|Ask about working hours.|What are the working hours for this job?
+Thank you for your time. I look forward to hearing from you.|End the interview politely.|Thank you for your time. I hope to hear from you soon.`,
+`Let’s start the meeting. Does everyone have the agenda?|Open a meeting.|Let’s begin. Does everyone have the agenda?
+I would like to give a quick update on my project.|Start an update.|I would like to update you on my task.
+We are on track to finish by Friday.|Say the project is on time.|We are on track to finish next week.
+We are a little behind schedule.|Say you are late.|We are a little behind because of delays.
+Could you share your screen, please?|Ask a colleague to share a screen.|Could you share your screen, please?
+Sorry, could you repeat that?|Ask someone to repeat.|Sorry, could you say that again?
+I will follow up with an email after the meeting.|Promise a follow-up.|I will email you the notes after the meeting.
+Thanks, everyone. That is all for today.|Close the meeting.|Thanks, everyone. The meeting is finished.`,
+`I would like to report a lost bag.|Report a lost bag.|I would like to report a lost suitcase.
+My bag has a red tag and a blue strap.|Describe your bag.|My bag is black with a small tag.
+When is the next flight to Dubai?|Ask about the next flight.|When is the next flight to Istanbul?
+I missed my connecting flight.|Say you missed a flight.|I missed my train. What should I do?
+Can I change my ticket to tomorrow?|Ask to change a ticket.|Can I change my ticket to Friday?
+Is breakfast included in the room price?|Ask about the hotel.|Is breakfast included in the price?
+The air conditioner in my room is not working.|Report a hotel problem.|The shower in my room is not working.
+Could you call a taxi for me, please?|Ask for a taxi.|Could you call a taxi to the airport?`,
+`I have just moved to this city.|Say you are new here.|I have just moved here for work.
+What kind of music do you like?|Ask about music.|What kind of movies do you like?
+I enjoy cooking and watching football.|Talk about your hobbies.|I enjoy reading and walking.
+Do you want to join us for dinner?|Invite someone to dinner.|Do you want to join us for lunch?
+That sounds great. What time shall we meet?|Accept an invitation.|That sounds great. Where shall we meet?
+I am sorry, I can’t come, but thanks for asking.|Decline politely.|Sorry, I can’t come, but thank you.
+Let’s keep in touch. What is your number?|Ask for contact details.|Let’s keep in touch. Can I have your number?
+I had a great time today.|Say you enjoyed the day.|I had a wonderful evening.`,
+`I am afraid I don’t quite agree with that.|Disagree gently.|I am afraid I don’t completely agree.
+That is an interesting idea, but it may be risky.|Praise an idea, then raise a concern.|That is a good idea, but it may be expensive.
+Have we considered the long-term costs?|Raise a concern as a question.|Have we considered the risks?
+With respect, I see it differently.|Disagree respectfully.|With respect, I see it differently.
+Perhaps we could find a middle ground.|Suggest a compromise.|Perhaps we could meet halfway.
+Could you give me an example to clarify your point?|Ask for an example.|Could you give an example, please?
+I take your point, and I would like to add something.|Accept a point and add your own.|I take your point, and I would add one thing.
+Let’s agree to disagree and move on.|End a debate calmly.|Let’s agree to disagree and move on.`,
+`What is the best price you can offer?|Ask for the best price.|What is the best price you can offer me?
+We were hoping for a slightly lower figure.|Ask for a lower price.|We were hoping for a lower price.
+If we order more, would you offer a discount?|Offer a bigger order for a deal.|If we sign for a year, could you reduce the price?
+I am afraid that is beyond our budget.|Say it is too expensive.|I am afraid that is over our budget.
+Could we split the difference?|Suggest a compromise.|Could we meet in the middle?
+That works for us, provided delivery is on time.|Accept with a condition.|That works for us, as long as delivery is fast.
+Can we put that in writing?|Ask for a written agreement.|Can we put that in writing, please?
+It has been a pleasure doing business with you.|End the deal politely.|It was a pleasure working with you.`,
+`Good afternoon, and thank you for coming.|Greet the audience.|Good morning, and thank you for coming.
+My name is Ali, and I will be your speaker today.|Introduce yourself.|My name is Sara, and I will be speaking today.
+Let me start with some background.|Begin your first point.|Let me begin with the main problem.
+As you can see on this slide, sales have grown.|Point to a slide.|As you can see on this slide, costs have fallen.
+This brings me to my second point.|Move to the next point.|Now let me move to the next point.
+Let me give you a quick example.|Introduce an example.|Let me give you a short example.
+In conclusion, we recommend this plan.|Start your conclusion.|In conclusion, I suggest we start now.
+Thank you for listening. Are there any questions?|End and invite questions.|Thank you for listening. Do you have any questions?`];
+MORE.forEach((b,i)=>b.split('\n').forEach(l=>{const p=l.split('|');TR[i][2].push([p[0],p[1],p[2],'Say it aloud twice, then answer in your own words.'])}));
+
 /* ===== ROUTER ===== */
 const T=[['home','🏠','Home'],['lessons','📘','Lessons'],['speak','🎙️','Speaking'],['vocab','🔤','Vocabulary'],['gram','✏️','Grammar'],['quiz','🧠','Quizzes'],['prog','📈','Progress'],['plan','📅','Free plan'],['prem','⭐','Premium'],['more','ℹ️','More']];
 $('#nav').innerHTML=T.map(t=>`<button data-n="${t[0]}" onclick="go('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join('');
