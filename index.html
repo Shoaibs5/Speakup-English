@@ -2,6 +2,7 @@
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SpeakUp English</title>
+<link rel="manifest" href="manifest.json"><meta name="theme-color" content="#0b3d91"><link rel="icon" href="icon-192.png">
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#f4f8ff;--card:#fff;--ink:#0f2a4a;--mut:#5a6f8c;--pri:#1565d8;--pri2:#0b3d91;--line:#d6e2f5;--ok:#17803f;--bad:#c93a3a;--sf:#eaf2ff;--onp:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px)}
@@ -380,6 +381,9 @@ function cloudQ(){try{if(!AU||!AM||!AM.f)return;clearTimeout(ct);ct=setTimeout(p
 async function push(){if(!AU||!AM||!AM.f)return;try{const o=Object.assign({},S);delete o.fb;await AM.f.setDoc(AM.f.doc(AM.db,'users',AU.uid),{p:JSON.stringify(o),t:Date.now()});cst='Progress saved to your account.'}catch(e){cst='Could not save to your account ('+(e.code||'error')+'). It is still saved on this phone.'}if(cur==='acct')go()}
 function mergeS(c){const bs=S.best==null?-1:S.best,bc=c.best==null?-1:c.best,e0=!Object.keys(S.days).length&&!S.done.length&&!S.tr.length;['done','tr','pl','c30'].forEach(k=>{S[k]=[...new Set([...(S[k]||[]),...(c[k]||[])])]});const d=Object.assign({},c.days||{});for(const k in S.days)d[k]=Math.max(d[k]||0,S.days[k]);S.days=d;S.best=Math.max(bs,bc)<0?null:Math.max(bs,bc);S.scores=((c.scores||[]).length>S.scores.length?c.scores:S.scores).slice(-20);const cl=c.last||'',sl=S.last||'';if(cl>sl||(cl===sl&&(c.streak||0)>S.streak)){S.last=cl;S.streak=c.streak||0}if(e0)['lv','goal','vu','vpi'].forEach(k=>{if(c[k]!=null)S[k]=c[k]})}
 async function pull(){try{if(!AM||!AM.f)return;const s=await AM.f.getDoc(AM.f.doc(AM.db,'users',AU.uid));if(s.exists()){mergeS(JSON.parse(s.data().p));cst='Progress loaded from your account.'}else cst='Your progress will be saved to your account.';save();go()}catch(e){cst='Could not reach your account storage ('+(e.code||'error')+'). Your progress is still saved on this phone.';if(cur==='acct')go()}}
+
+/* ===== INSTALLABLE APP (PWA): works only from your own website, not inside the Claude preview ===== */
+try{if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{})}catch(e){}
 
 /* ===== ROUTER ===== */
 const T=[['home','🏠','Home'],['lessons','📘','Lessons'],['speak','🎙️','Speaking'],['vocab','🔤','Vocabulary'],['gram','✏️','Grammar'],['quiz','🧠','Quizzes'],['prog','📈','Progress'],['plan','📅','Free plan'],['prem','⭐','Premium'],['more','ℹ️','More']];
