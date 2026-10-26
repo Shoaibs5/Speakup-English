@@ -609,11 +609,11 @@ function akRow(x,k){return `<div class='row' style='flex-wrap:wrap'><span style=
 function akRep(k){const g=A1[ak.i].x[k],o=$('#ar'+k);mic(h=>{const a=nw(g),b=nw(h),x=a.filter(w=>!b.includes(w));o.textContent='Heard: “'+h+'”. '+(a.length-x.length)+' of '+a.length+' words matched'+(x.length?'. Not heard: '+x.join(', '):'. Every word was heard')+'. This is a text match, not a pronunciation score.'},o)}
 function akPick(j){const q=A1[ak.i].q[ak.qi];if(ak.lock)return;ak.lock=1;const ok=j===q.a,bs=document.querySelectorAll('#akq .o');ak.ans[ak.qi]=j;if(ok)ak.sc++;bs[q.a].classList.add('ok');if(!ok)bs[j].classList.add('bad');$('#akf').textContent=(ok?'✅ Correct! ':'❌ Not quite. ')+q.w;if(ak.first)act();$('#akn').innerHTML=`<button class='b' onclick='akNext()'>${ak.qi<A1[ak.i].q.length-1?'Next question':'See results'}</button>`}
 function akNext(){ak.qi++;ak.lock=0;if(ak.qi>=A1[ak.i].q.length){const a=AS(),i=ak.i;a.b[i]=Math.max(a.b[i]==null?0:a.b[i],ak.sc);if(ak.sc>=3&&!a.d.includes(i)){a.d.push(i);toast('Lesson completed!')}save();ak.m='s'}go();scrollTo(0,0)}
-function akView(){const l=A1[ak.i],a=AS(),n=A1.length,nav=`<div class='acts'>${ak.i>0?`<button class='b sm alt' onclick='akStep(-1)'>← Previous lesson</button>`:''}${ak.i<n-1?`<button class='b sm' onclick='akStep(1)'>Next lesson →</button>`:`<button class='b sm alt' disabled>Next: coming soon</button>`}</div>`,back=`<button class='back' onclick='akBack()'>← Course</button>`;
+function akView(){const l=A1[ak.i],a=AS(),n=A1.length,nav=`<div class='acts'>${AP()>0?`<button class='b sm alt' onclick='akStep(-1)'>← Previous lesson</button>`:''}${AP()<ordr().length-1?`<button class='b sm' onclick='akStep(1)'>Next lesson →</button>`:`<button class='b sm alt' disabled>Next: coming soon</button>`}</div>`,back=`<button class='back' onclick='akBack()'>← Course</button>`;
 if(ak.m==='q'){const q=l.q[ak.qi];return `${back}<small>${l.t}: question ${ak.qi+1} of ${l.q.length}</small><div class='bar'><i style='width:${ak.qi/l.q.length*100}%'></i></div><div class='card' id='akq'><p><b>${q.q}</b></p>${q.o.map((o,j)=>`<button class='o' data-j='${j}' onclick='akPick(+this.dataset.j)'>${o}</button>`).join('')}<p class='fb' id='akf'></p></div><div id='akn'></div>`}
 if(ak.m==='s'){const ok=ak.sc>=3,done=a.d.includes(ak.i);return `${back}<h2 style='margin:0'>${l.t}</h2><div class='card c'><p class='big'>${ak.sc} / ${l.q.length}</p><p>${ok?'🎉 Lesson complete!':'Almost there. You need 3 of 5 to complete this lesson. Review your answers and try again.'}</p>${done&&!ok?'<small>You already completed this lesson earlier.</small>':''}<small>${saveNote()}</small></div><div class='acts'><button class='b' data-m='r' onclick='akMode(this.dataset.m)'>Review answers</button><button class='b alt' data-m='q' onclick='akMode(this.dataset.m)'>Try quiz again</button></div>${nav}`}
 if(ak.m==='r')return `${back}<h3>Review: ${l.t}</h3>`+l.q.map((q,i)=>{const r=ak.ans[i]===q.a;return `<div class='card'><p><b>${i+1}. ${q.q}</b></p><p>Your answer: ${ak.ans[i]==null?'(no answer)':q.o[ak.ans[i]]} ${r?'✅':'❌'}</p>${r?'':`<p>Correct answer: <b>${q.o[q.a]}</b></p>`}<p><small>${q.w}</small></p></div>`}).join('')+`<div class='acts'><button class='b alt' data-m='s' onclick='akMode(this.dataset.m)'>Back to results</button></div>`;
-return `${back}<h2 style='margin:0'>${ak.i+1}. ${l.t}</h2><small>${CK==='a2'?'A2 Elementary':'A1 Beginner'}, ${a.d.includes(ak.i)?'✅ completed':'not completed yet'}</small><div class='card'><b>You will learn to</b>${l.o.map(x=>`<p>• ${x}</p>`).join('')}</div><div class='card'><b>Explanation</b><p>${l.e}</p>${l.g?`<p><small>Grammar: ${l.g}</small></p>`:''}</div><h3>Example sentences</h3><p class='note'>Tap 🔊 to listen, 🐢 for slow, 🎤 to say it. The microphone only shows the words your browser heard. It cannot judge pronunciation.</p>${l.x.map((x,k)=>akRow(x,k)).join('')}<h3>Vocabulary</h3>${l.v.map(w=>`<div class='card' style='padding:10px 14px'><b>${w[0]}</b> <button class='ic' data-t='${w[0]}. ${w[2]}' onclick='say(this.dataset.t,1)' aria-label='Listen' style='width:36px;height:36px;margin-left:6px'>🔊</button><br><small>${w[1]}</small><br><i>${w[2]}</i></div>`).join('')}<button class='b w' data-m='q' onclick='akMode(this.dataset.m)'>Start the 5-question quiz</button>${nav}`}
+return `${back}<h2 style='margin:0'>${AP()+1}. ${l.t}</h2><small>${CK==='a2'?'A2 Elementary':'A1 Beginner'}, ${a.d.includes(ak.i)?'✅ completed':'not completed yet'}</small><div class='card'><b>You will learn to</b>${l.o.map(x=>`<p>• ${x}</p>`).join('')}</div><div class='card'><b>Explanation</b><p>${l.e}</p>${l.g?`<p><small>Grammar: ${l.g}</small></p>`:''}</div><h3>Example sentences</h3><p class='note'>Tap 🔊 to listen, 🐢 for slow, 🎤 to say it. The microphone only shows the words your browser heard. It cannot judge pronunciation.</p>${l.x.map((x,k)=>akRow(x,k)).join('')}<h3>Vocabulary</h3>${l.v.map(w=>`<div class='card' style='padding:10px 14px'><b>${w[0]}</b> <button class='ic' data-t='${w[0]}. ${w[2]}' onclick='say(this.dataset.t,1)' aria-label='Listen' style='width:36px;height:36px;margin-left:6px'>🔊</button><br><small>${w[1]}</small><br><i>${w[2]}</i></div>`).join('')}<button class='b w' data-m='q' onclick='akMode(this.dataset.m)'>Start the 5-question quiz</button>${nav}`}
 {const l0=V.lessons;V.lessons=()=>ak.i!=null?akView():`<h2>Lessons</h2><div class='seg'><button class='${lsm==='c'?'on':''}' data-m='c' onclick='lsm=this.dataset.m;go()'>English Course</button><button class='${lsm==='q'?'on':''}' data-m='q' onclick='lsm=this.dataset.m;go()'>Quick lessons</button></div>`+(lsm==='c'?courseView():l0().replace('<h2>Lessons</h2>',''))}
 {const m2=mergeS;mergeS=function(c){m2(c);if(c.a1){const a=AS();a.d=[...new Set([...a.d,...(c.a1.d||[])])];for(const k in (c.a1.b||{}))a.b[k]=Math.max(a.b[k]==null?0:a.b[k],c.a1.b[k])}}}
 {const p1=V.prog;V.prog=()=>p1()+`<div class='card'><b>English Course: A1</b><p>${AS().d.length} of ${A1.length} built lessons completed. ${saveNote()}</p><button class='b sm alt' data-n='lessons' data-m='c' onclick='lsm=this.dataset.m;go(this.dataset.n)'>Open course</button></div>`}
@@ -722,6 +722,157 @@ function akOpenC(k,i){useC(k);akOpen(i)}
 function courseView(){const sec=(k,name,L,C)=>{const a=S[k]||{d:[],b:{}};return `<h3>${name}</h3><small>${a.d.length} of ${L.length} built lessons completed (${L.length} of ${L.length+C.length} built so far)</small><div class='bar'><i style='width:${a.d.length/(L.length+C.length)*100}%'></i></div>`+L.map((l,i)=>`<div class='card tap' data-k='${k}' data-i='${i}' onclick='akOpenC(this.dataset.k,+this.dataset.i)'><b>${a.d.includes(i)?'✅ ':''}${i+1}. ${l.t}</b>${a.b[i]!=null?`<p><small>Best quiz score: ${a.b[i]} / 5</small></p>`:''}</div>`).join('')+`<details class='card'><summary><b>Coming soon: ${C.length} more lessons</b></summary>${C.map((t,j)=>`<p><small>${L.length+j+1}. ${t}</small></p>`).join('')}</details>`};return `<div class='card'><b>Your course path</b><p><small>CEFR-inspired levels. This is not an official qualification, and finishing lessons does not guarantee fluency. Each lesson has explanations, examples to listen to and say, vocabulary and a 5-question quiz.</small></p><p class='note'>${saveNote()}</p></div>`+sec('a1','A1 Beginner',A1L,A1C)+sec('a2','A2 Elementary',A2L,A2C)+`<details class='card'><summary><b>Roadmap: B1 to C2</b> <small>Coming soon</small></summary>${LVR.slice(1).map(r=>`<p><b>${r[0]}</b><br><small>Planned focus: ${r[1]}. Not built yet. Quick lessons for these levels are in the Quick lessons tab.</small></p>`).join('')}</details>`}
 {const m3=mergeS;mergeS=function(c){const k=CK;useC('a1');m3(c);useC('a2');if(c.a2){const a=AS();a.d=[...new Set([...a.d,...(c.a2.d||[])])];for(const q in(c.a2.b||{}))a.b[q]=Math.max(a.b[q]==null?0:a.b[q],c.a2.b[q])}useC(k)}}
 {const p3=V.prog;V.prog=()=>{const k=CK;useC('a1');let h;try{h=p3()}finally{useC(k)}const a=S.a2||{d:[]};return h+`<div class='card'><b>English Course: A2 Elementary</b><p>${a.d.length} of ${A2L.length} built lessons completed. ${saveNote()}</p><button class='b sm alt' data-n='lessons' data-m='c' onclick='lsm=this.dataset.m;go(this.dataset.n)'>Open course</button></div>`}}
+
+/* ===== v8: A1 course extended to 20 lessons (original 8 keep indices 0-7 so saved progress stays valid) ===== */
+A1L.push(...prs(`T Countries and nationalities
+O Name some countries and nationalities|Say where you and other people are from
+E A country is a place, like Brazil. A nationality tells us where a person is from, like Brazilian. We say “I’m from Brazil” or “I’m Brazilian.” Countries and nationalities always start with a capital letter.
+X I’m from Pakistan. I’m Pakistani.|She is from Japan. She is Japanese.|We are from Spain, so we are Spanish.|Are you from Mexico?|My teacher is from Canada. He is Canadian.
+V country=an area with its own government=Egypt is a country in Africa.|nationality=the country a person belongs to=My nationality is Indian.|language=the words people use to speak=They speak Spanish.|capital=the most important city of a country=Paris is the capital of France.
+G Say “I’m from India” (country) or “I’m Indian” (nationality). Do not say “I’m from Indian”.
+Q Which word is a nationality?|Germany|German|Berlin|1|“German” describes a person from Germany.
+Q Complete: “She is from Italy. She is ___.”|Italy|Italian|Italians|1|After “is”, we use the nationality word “Italian”.
+Q Which sentence is right for saying your country?|I’m from Chinese.|I’m from China.|I’m China.|1|After “from” we use the country name.
+Q Which is written correctly?|turkey|Turkey|turKey|1|Country names start with a capital letter.
+Q What is the capital of France?|Paris|Rome|Madrid|0|Paris is the capital city of France.
+
+T Articles: a, an and the
+O Use a, an and the correctly|Choose a or an by sound
+E We use “a” or “an” for one thing when we first mention it: “I have a dog.” We use “an” before a vowel sound: “an apple”. We use “the” for something specific that both people know: “The dog is in the garden.”
+X I have a brother and a sister.|She eats an apple every day.|It’s an old car.|The sun is very hot today.|I saw a film last night. The film was great.
+V an apple=one apple=I eat an apple at lunch.|an hour=sixty minutes, with a silent h=The lesson is an hour long.|a university=a place of higher study, starting with a “you” sound=She studies at a university.|the moon=the one moon we see at night=The moon is bright tonight.
+G Look at the sound, not the letter: “an hour” but “a university”.
+Q I have ___ orange in my bag.|a|an|two|1|“Orange” starts with a vowel sound, so use “an”.
+Q My father is ___ engineer.|a|an|two|1|“Engineer” starts with a vowel sound.
+Q Choose the correct phrase.|a hour|an hour|a our|1|“Hour” starts with a vowel sound because the h is silent.
+Q I bought a book. ___ book is very interesting.|A|The|An|1|We use “the” when we mention the same thing again.
+Q Pick the correct phrase for a place of study.|an university|a university|the a university|1|“University” starts with a “you” sound, so we use “a”.
+
+T Singular and plural nouns
+O Make regular plural nouns|Use common irregular plurals
+E Most nouns add -s for the plural: one book, two books. Nouns ending in -s, -sh, -ch or -x add -es: bus, buses. If a noun ends in consonant + y, change y to i and add -es: city, cities. Some plurals are irregular: man, men; child, children; person, people.
+X I have two sisters.|There are three buses at the station.|Big cities are busy.|The children are in the garden.|Two women and one man are waiting.
+V child=a young person=The child is five years old.|children=more than one child=The children play outside.|woman=an adult female=That woman is my teacher.|women=more than one woman=The women work here.
+G Irregular plurals: man-men, woman-women, child-children, foot-feet, person-people.
+Q What is the plural of “box”?|boxs|boxes|boxies|1|Nouns ending in -x add -es.
+Q What is the plural of “city”?|citys|cities|cityes|1|After a consonant, change y to i and add -es.
+Q What is the plural of “child”?|childs|children|childes|1|“Child” has an irregular plural: children.
+Q Which sentence has the right plural?|Three man are here.|Three men are here.|Three mens are here.|1|The plural of “man” is “men”.
+Q What is the plural of “book”?|books|bookes|bookies|0|Most nouns simply add -s.
+
+T This, that, these and those
+O Point to things near you and far from you|Choose singular or plural words
+E “This” and “these” are for things near you. “That” and “those” are for things far from you. Use “this” and “that” with one thing, and “these” and “those” with more than one: “This book is mine. Those books are yours.”
+X This is my phone.|That building is a bank.|These shoes are comfortable.|Those children are my neighbours.|What is that over there?
+V near=not far away=The bus stop is near my house.|far=a long way away=The airport is far from here.|over there=in that place, not here=My car is over there.|neighbour=a person who lives next to you=My neighbour is friendly.
+G this/that + singular noun; these/those + plural noun.
+Q ___ pen in my hand is blue.|These|This|Those|1|One pen near me needs “this”.
+Q Which word points to two cars far away?|those|this|these|0|“Those” is plural and far away.
+Q ___ are my keys, here on the table.|These|That|Those|0|The keys are plural and near.
+Q Choose the right word: “___ house over there is big.”|That|Those|These|0|One house far away needs “that”.
+Q “These” is the plural of…|that|this|those|1|“These” is the plural of “this”.
+
+T Possessive adjectives
+O Use my, your, his, her, its, our and their|Show who something belongs to
+E Possessive adjectives show who something belongs to. They come before a noun: “my bag”, “her phone”. Use “his” for a man, “her” for a woman, “its” for a thing or animal, and “their” for more than one person.
+X My name is Hana.|Is this your bag?|His brother lives in Dubai.|Her house has a small garden.|We love our teacher, and they love their school.
+V belong=to be owned by someone=This book belongs to me.|owner=the person who has something=The owner of the shop is kind.|bag=something you carry things in=Her bag is red.|garden=a place outside a house with plants=Our garden is small.
+G “Its” has no apostrophe: The cat likes its food.
+Q Sara has a car. ___ car is red.|His|Her|Their|1|Sara is a woman, so we use “her”.
+Q We live in a small house. ___ house is old.|Our|Your|Her|0|“We” becomes “our”.
+Q Tom and Jim play football. ___ team is good.|Their|His|Our|0|Two people together use “their”.
+Q The dog wants ___ dinner.|it’s|its|their|1|The possessive “its” has no apostrophe.
+Q Which word comes before a noun to show ownership?|my|me|I|0|“My” is a possessive adjective.
+
+T Jobs and occupations
+O Name common jobs|Ask and answer questions about work
+E We ask “What do you do?” to find out someone’s job. We answer “I’m a teacher” or “I work as a nurse.” Use “a” or “an” before the job: a driver, an engineer. We say where we work with “in” or “at”: “I work in a hospital.”
+X What do you do? I’m a teacher.|My sister is a nurse.|He works in a bank.|She is an engineer at a big company.|They are drivers, and they work in the city.
+V doctor=a person who treats sick people=The doctor works in a clinic.|driver=a person who drives vehicles=He is a bus driver.|farmer=a person who grows food=The farmer has many animals.|engineer=a person who designs machines or buildings=She is an engineer.
+G Use “an” before a vowel sound: an engineer, an electrician.
+Q Which question asks about someone’s job?|What do you do?|How old are you?|Where is your bag?|0|“What do you do?” asks about a person’s job.
+Q A person who treats sick people is a…|doctor|farmer|driver|0|A doctor treats people who are ill.
+Q A person who grows food is a…|farmer|driver|nurse|0|A farmer grows crops and keeps animals.
+Q I work ___ a hospital.|in|under|between|0|We say “work in” a hospital.
+Q Which phrase is correct?|an engineer|a engineer|an teacher|0|Use “an” before a vowel sound.
+
+T There is and there are
+O Say what exists in a place|Use there is, there are and their negatives
+E We use “there is” with one thing and “there are” with more than one: “There is a park near my house. There are two shops.” The negative is “there isn’t” or “there aren’t”. Questions: “Is there a bank here?” “Are there any shops?”
+X There is a library in my town.|There are three bedrooms in the flat.|There isn’t a supermarket near here.|Are there any restaurants nearby?|Is there a bus stop on this street?
+V library=a place where you borrow books=The library is open today.|bedroom=a room for sleeping=Our flat has two bedrooms.|nearby=close to this place=Is there a pharmacy nearby?|street=a road in a town=There are trees on our street.
+G Use “there is/there are” to introduce something new. Use “it is” for something you already know.
+Q ___ a cat on the sofa.|There is|There are|Are there|0|One cat needs “there is”.
+Q ___ four chairs in the kitchen.|There is|There are|Is there|1|Plural nouns need “there are”.
+Q Make this negative: “There is a bank here.”|There isn’t a bank here.|There not is a bank here.|There doesn’t a bank here.|0|The negative of “there is” is “there isn’t”.
+Q Which question is correct?|Are there any shops?|Is there any shops?|There are any shops?|0|“Shops” is plural, so use “Are there”.
+Q How do you ask about one bus stop?|Is there a bus stop?|Are there a bus stop?|There is bus stop?|0|“Is there a…?” asks about one thing.
+
+T Prepositions of place
+O Describe where things are|Use in, on, under, next to, behind and between
+E Prepositions of place tell us where something is. “In” means inside, “on” means on a surface, and “under” means below. “Next to” means beside, “behind” is at the back, and “between” is in the middle of two things.
+X The keys are on the table.|The cat is under the chair.|My bag is in the car.|The bank is next to the post office.|The park is between the school and the market.
+V behind=at the back of something=The garden is behind the house.|next to=beside=I sit next to my friend.|between=in the middle of two things=The shop is between the bank and the café.|opposite=on the other side, facing=The school is opposite the park.
+G Say “at the bus stop” for a point, “in the room” for inside, and “on the wall” for a surface.
+Q The book is ___ the table.|on|in|between|0|The book is on the top surface.
+Q The cat is hiding ___ the bed.|under|on|at|0|“Under” means below.
+Q The post office is ___ the bank and the café.|between|on|in|0|“Between” means in the middle of two things.
+Q I wait for the bus ___ the bus stop.|at|between|under|0|We use “at” for a specific point.
+Q The pharmacy is ___ the school, on the other side of the street.|opposite|under|inside|0|“Opposite” means across from.
+
+T Have and has
+O Use have and has to talk about what people own|Make negatives and questions with have
+E Use “have” with I, you, we and they, and “has” with he, she and it: “I have a bike. She has a bike.” For negatives, use “don’t have” or “doesn’t have”. For questions, use “Do you have…?” or “Does he have…?”
+X I have two brothers.|She has a new phone.|We don’t have a car.|He doesn’t have any money today.|Do you have a pen?
+V bike=a vehicle with two wheels=I have a red bike.|pet=an animal you keep at home=We have a pet cat.|ticket=a paper or card that lets you travel or enter=Do you have a ticket?|sister=a girl or woman with the same parents=She has one sister.
+G After doesn’t, use have, not has: She doesn’t have a car.
+Q My sister ___ a new job.|have|has|haves|1|“My sister” is “she”, so use “has”.
+Q They ___ two children.|has|have|having|1|“They” uses “have”.
+Q Which negative sentence is right?|He doesn’t has a bike.|He doesn’t have a bike.|He don’t have a bike.|1|After “doesn’t”, use “have”.
+Q Which question about a ticket is correct?|Does she have a ticket?|Does she has a ticket?|Do she have a ticket?|0|After “does”, use “have”.
+Q Pick the correct sentence about a pet.|We has a pet.|We have a pet.|We haves a pet.|1|“We” uses “have”.
+
+T Present simple tense
+O Use the present simple for habits and facts|Add -s or -es for he, she and it
+E We use the present simple for habits, routines and facts: “I work in a shop.” With he, she and it, add -s: “She works in a shop.” Verbs ending in -sh, -ch, -s, -x or -o add -es: watches, goes. Verbs ending in consonant + y change y to i: studies.
+X I live in a small town.|My brother works at a bank.|The shop opens at nine.|She studies English every evening.|We play football on Saturdays.
+V habit=something you do again and again=Drinking tea is my habit.|always=every time=I always brush my teeth.|never=not at any time=He never eats meat.|often=many times=We often visit our grandparents.
+G Add -s: works. Add -es: watches, goes. Change y to i: study, studies.
+Q He ___ in a bank.|work|works|working|1|With “he”, add -s to the verb.
+Q She ___ TV in the evening.|watchs|watches|watchies|1|Verbs ending in -ch add -es.
+Q They ___ English on Mondays.|study|studies|studys|0|“They” uses the base verb.
+Q My brother ___ to school by bus.|go|goes|going|1|“Go” becomes “goes” with he, she and it.
+Q Which sentence is a habit?|I am eating now.|I eat breakfast at seven.|I ate breakfast.|1|Habits use the present simple.
+
+T Daily routines
+O Talk about your day from morning to night|Say what time you do things
+E Daily routines are the things we do every day. We say times with “at”: “I get up at six.” We use time words like first, then, after that and finally to put actions in order. Use the present simple: “I have breakfast, then I go to work.”
+X I get up at six o’clock.|She has breakfast and goes to work.|We have lunch at one.|After that, I study for an hour.|Finally, I go to bed at ten.
+V get up=to leave your bed in the morning=I get up at seven.|breakfast=the first meal of the day=I have breakfast at home.|go to bed=to get into bed to sleep=Children go to bed early.|finish=to complete=I finish work at five.
+G Use “have” with meals: have breakfast, have lunch, have dinner.
+Q I ___ up at six every morning.|get|gets|getting|0|“I” uses the base verb.
+Q We have lunch ___ one o’clock.|at|on|in|0|We use “at” with clock times.
+Q Which word shows the last step?|finally|first|then|0|“Finally” introduces the last action.
+Q Which is the correct order for the start of the day?|get up, have breakfast, go to work|go to work, get up, have breakfast|have breakfast, go to work, get up|0|Most people get up first, eat, then leave for work.
+Q Which phrase means “to leave your bed in the morning”?|get up|go to bed|finish work|0|“Get up” means to leave your bed.
+
+T Negatives and basic questions
+O Make negative sentences with don’t and doesn’t|Ask yes/no questions with do and does
+E In the present simple, we make negatives with “do not (don’t)” or “does not (doesn’t)” before the base verb: “I don’t like fish. He doesn’t like fish.” For yes/no questions we start with “Do” or “Does”: “Do you like fish?” We answer “Yes, I do.” or “No, I don’t.”
+X I don’t speak French.|She doesn’t work on Sundays.|We don’t have a car.|Do you live near here?|Does he play football? No, he doesn’t.
+V speak=to talk using your voice=I speak two languages.|work=to have a job, or to do a job=She works on weekdays.|near=not far=Do you live near the station?|weekend=Saturday and Sunday=I rest at the weekend.
+G After don’t/doesn’t and after do/does, use the base verb: She doesn’t work. Does she work?
+Q She ___ like coffee.|don’t|doesn’t|isn’t|1|“She” takes “doesn’t”.
+Q Choose the correct short answer: “Do you live here?”|Yes, I do.|Yes, I live.|Yes, I am.|0|We answer “Do you…?” with “do”.
+Q They ___ work on Sundays.|doesn’t|don’t|aren’t|1|“They” takes “don’t”.
+Q Which yes/no question is right?|Does he plays tennis?|Does he play tennis?|Do he play tennis?|1|After “does”, the verb stays in the base form.
+Q Make this negative: “We eat meat.”|We don’t eat meat.|We doesn’t eat meat.|We not eat meat.|0|Use “don’t” with “we” + the base verb.`));
+const A1C2=['Food and drinks','Shopping and prices','Days, months and seasons','Weather','Directions and places in town','At a restaurant','Likes and dislikes','Can and cannot','Basic adjectives','A1 final review and assessment'];
+const AO1=[0,1,2,8,4,3,9,10,11,12,5,13,6,14,15,16,17,18,7,19];
+function ordr(){return CK==='a1'?AO1:A1.map((_,i)=>i)}
+function AP(){return ordr().indexOf(ak.i)}
+function akStep(d){const o=ordr(),j=o.indexOf(ak.i)+d;if(j>=0&&j<o.length)akOpen(o[j])}
+function courseView(){const sec=(k,name,L,C,O)=>{const a=S[k]||{d:[],b:{}};return `<h3>${name}</h3><small>${a.d.length} of ${L.length} built lessons completed (${L.length} of ${L.length+C.length} built so far)</small><div class='bar'><i style='width:${a.d.length/(L.length+C.length)*100}%'></i></div>`+O.map((i,p)=>`<div class='card tap' data-k='${k}' data-i='${i}' onclick='akOpenC(this.dataset.k,+this.dataset.i)'><b>${a.d.includes(i)?'✅ ':''}${p+1}. ${L[i].t}</b>${a.b[i]!=null?`<p><small>Best quiz score: ${a.b[i]} / 5</small></p>`:''}</div>`).join('')+`<details class='card'><summary><b>Coming soon: ${C.length} more lessons</b></summary>${C.map((t,j)=>`<p><small>${O.length+j+1}. ${t}</small></p>`).join('')}</details>`};return `<div class='card'><b>Your course path</b><p><small>CEFR-inspired levels. This is not an official qualification, and finishing lessons does not guarantee fluency. Each lesson has explanations, examples to listen to and say, vocabulary and a 5-question quiz.</small></p><p class='note'>${saveNote()}</p></div>`+sec('a1','A1 Beginner',A1L,A1C2,AO1)+sec('a2','A2 Elementary',A2L,A2C,A2L.map((_,i)=>i))+`<details class='card'><summary><b>Roadmap: B1 to C2</b> <small>Coming soon</small></summary>${LVR.slice(1).map(r=>`<p><b>${r[0]}</b><br><small>Planned focus: ${r[1]}. Not built yet. Quick lessons for these levels are in the Quick lessons tab.</small></p>`).join('')}</details>`}
 
 /* ===== ROUTER ===== */
 const T=[['home','🏠','Home'],['lessons','📘','Lessons'],['speak','🎙️','Speaking'],['vocab','🔤','Vocabulary'],['gram','✏️','Grammar'],['quiz','🧠','Quizzes'],['prog','📈','Progress'],['plan','📅','Free plan'],['prem','⭐','Premium'],['more','ℹ️','More']];
