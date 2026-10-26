@@ -595,11 +595,11 @@ Q ___ does the lesson start? At nine.|What|When|Who|1|“When” asks about time
 Q Which question uses “does” correctly?|Does she like pizza?|Do she like pizza?|Does she likes pizza?|0|Use “does” with “she”, and the main verb stays simple.
 Q Which question asks about a person?|Who is she?|Where is she?|When is she?|0|“Who” asks about people.
 Q ___ are you? I’m fine, thanks.|How|Which|Where|0|“How are you?” asks about someone’s state.`;
-const A1=A1RAW.trim().split('\n\n').map(b=>{const o={t:'',o:[],e:'',x:[],v:[],g:'',q:[]};b.split('\n').forEach(l=>{const k=l[0],r=l.slice(2);if(k==='T')o.t=r;else if(k==='O')o.o=r.split('|');else if(k==='E')o.e=r;else if(k==='X')o.x=r.split('|');else if(k==='V')o.v=r.split('|').map(x=>x.split('='));else if(k==='G')o.g=r;else if(k==='Q'){const p=r.split('|');o.q.push({q:p[0],o:[p[1],p[2],p[3]],a:+p[4],w:p[5]})}});return o});
+let A1=A1RAW.trim().split('\n\n').map(b=>{const o={t:'',o:[],e:'',x:[],v:[],g:'',q:[]};b.split('\n').forEach(l=>{const k=l[0],r=l.slice(2);if(k==='T')o.t=r;else if(k==='O')o.o=r.split('|');else if(k==='E')o.e=r;else if(k==='X')o.x=r.split('|');else if(k==='V')o.v=r.split('|').map(x=>x.split('='));else if(k==='G')o.g=r;else if(k==='Q'){const p=r.split('|');o.q.push({q:p[0],o:[p[1],p[2],p[3]],a:+p[4],w:p[5]})}});return o});
 const A1C=['Shopping and asking prices','Food and ordering in a restaurant','Days, months and daily routines','Present simple tense','Describing people and objects','Places and directions','Review and assessment'];
 const LVR=[['A2 Elementary','past and future basics, routines, shopping and travel'],['B1 Intermediate','longer conversations, opinions and telling stories'],['B2 Upper Intermediate','fluent discussion, work and study English'],['C1 Advanced','precise, natural language for complex topics'],['C2 Proficiency','subtle, near-native style and nuance']];
 var ak={i:null,m:'l',qi:0,sc:0,ans:[],lock:0},lsm='c';
-const AS=()=>S.a1=S.a1||{d:[],b:{}};
+var CK='a1';const AS=()=>S[CK]=S[CK]||{d:[],b:{}};
 function courseView(){const a=AS(),n=A1.length;return `<div class='card'><b>Your course path</b><p><small>CEFR-inspired levels. This is not an official qualification, and finishing lessons does not guarantee fluency.</small></p><div class='bar'><i style='width:${a.d.length/(n+A1C.length)*100}%'></i></div><small>A1 Beginner: ${a.d.length} of ${n} available lessons completed (${n} of ${n+A1C.length} built so far)</small><p class='note'>${saveNote()}</p></div><h3>A1 Beginner</h3>`+A1.map((l,i)=>`<div class='card tap' data-i='${i}' onclick='akOpen(+this.dataset.i)'><b>${a.d.includes(i)?'✅ ':''}${i+1}. ${l.t}</b>${a.b[i]!=null?`<p><small>Best quiz score: ${a.b[i]} / 5</small></p>`:''}</div>`).join('')+A1C.map((t,j)=>`<div class='card' style='opacity:.55'><b>${n+j+1}. ${t}</b> <small>Coming soon</small></div>`).join('')+`<details class='card'><summary><b>Roadmap: A2 to C2</b> <small>Coming soon</small></summary>${LVR.map(r=>`<p><b>${r[0]}</b><br><small>Planned focus: ${r[1]}. Not built yet. Quick lessons for these levels are in the Quick lessons tab.</small></p>`).join('')}</details>`}
 function akOpen(i){ak={i:i,m:'l',qi:0,sc:0,ans:[],lock:0};go();scrollTo(0,0)}
 function akBack(){ak.i=null;go();scrollTo(0,0)}
@@ -613,10 +613,115 @@ function akView(){const l=A1[ak.i],a=AS(),n=A1.length,nav=`<div class='acts'>${a
 if(ak.m==='q'){const q=l.q[ak.qi];return `${back}<small>${l.t}: question ${ak.qi+1} of ${l.q.length}</small><div class='bar'><i style='width:${ak.qi/l.q.length*100}%'></i></div><div class='card' id='akq'><p><b>${q.q}</b></p>${q.o.map((o,j)=>`<button class='o' data-j='${j}' onclick='akPick(+this.dataset.j)'>${o}</button>`).join('')}<p class='fb' id='akf'></p></div><div id='akn'></div>`}
 if(ak.m==='s'){const ok=ak.sc>=3,done=a.d.includes(ak.i);return `${back}<h2 style='margin:0'>${l.t}</h2><div class='card c'><p class='big'>${ak.sc} / ${l.q.length}</p><p>${ok?'🎉 Lesson complete!':'Almost there. You need 3 of 5 to complete this lesson. Review your answers and try again.'}</p>${done&&!ok?'<small>You already completed this lesson earlier.</small>':''}<small>${saveNote()}</small></div><div class='acts'><button class='b' data-m='r' onclick='akMode(this.dataset.m)'>Review answers</button><button class='b alt' data-m='q' onclick='akMode(this.dataset.m)'>Try quiz again</button></div>${nav}`}
 if(ak.m==='r')return `${back}<h3>Review: ${l.t}</h3>`+l.q.map((q,i)=>{const r=ak.ans[i]===q.a;return `<div class='card'><p><b>${i+1}. ${q.q}</b></p><p>Your answer: ${ak.ans[i]==null?'(no answer)':q.o[ak.ans[i]]} ${r?'✅':'❌'}</p>${r?'':`<p>Correct answer: <b>${q.o[q.a]}</b></p>`}<p><small>${q.w}</small></p></div>`}).join('')+`<div class='acts'><button class='b alt' data-m='s' onclick='akMode(this.dataset.m)'>Back to results</button></div>`;
-return `${back}<h2 style='margin:0'>${ak.i+1}. ${l.t}</h2><small>A1 Beginner, ${a.d.includes(ak.i)?'✅ completed':'not completed yet'}</small><div class='card'><b>You will learn to</b>${l.o.map(x=>`<p>• ${x}</p>`).join('')}</div><div class='card'><b>Explanation</b><p>${l.e}</p>${l.g?`<p><small>Grammar: ${l.g}</small></p>`:''}</div><h3>Example sentences</h3><p class='note'>Tap 🔊 to listen, 🐢 for slow, 🎤 to say it. The microphone only shows the words your browser heard. It cannot judge pronunciation.</p>${l.x.map((x,k)=>akRow(x,k)).join('')}<h3>Vocabulary</h3>${l.v.map(w=>`<div class='card' style='padding:10px 14px'><b>${w[0]}</b> <button class='ic' data-t='${w[0]}. ${w[2]}' onclick='say(this.dataset.t,1)' aria-label='Listen' style='width:36px;height:36px;margin-left:6px'>🔊</button><br><small>${w[1]}</small><br><i>${w[2]}</i></div>`).join('')}<button class='b w' data-m='q' onclick='akMode(this.dataset.m)'>Start the 5-question quiz</button>${nav}`}
+return `${back}<h2 style='margin:0'>${ak.i+1}. ${l.t}</h2><small>${CK==='a2'?'A2 Elementary':'A1 Beginner'}, ${a.d.includes(ak.i)?'✅ completed':'not completed yet'}</small><div class='card'><b>You will learn to</b>${l.o.map(x=>`<p>• ${x}</p>`).join('')}</div><div class='card'><b>Explanation</b><p>${l.e}</p>${l.g?`<p><small>Grammar: ${l.g}</small></p>`:''}</div><h3>Example sentences</h3><p class='note'>Tap 🔊 to listen, 🐢 for slow, 🎤 to say it. The microphone only shows the words your browser heard. It cannot judge pronunciation.</p>${l.x.map((x,k)=>akRow(x,k)).join('')}<h3>Vocabulary</h3>${l.v.map(w=>`<div class='card' style='padding:10px 14px'><b>${w[0]}</b> <button class='ic' data-t='${w[0]}. ${w[2]}' onclick='say(this.dataset.t,1)' aria-label='Listen' style='width:36px;height:36px;margin-left:6px'>🔊</button><br><small>${w[1]}</small><br><i>${w[2]}</i></div>`).join('')}<button class='b w' data-m='q' onclick='akMode(this.dataset.m)'>Start the 5-question quiz</button>${nav}`}
 {const l0=V.lessons;V.lessons=()=>ak.i!=null?akView():`<h2>Lessons</h2><div class='seg'><button class='${lsm==='c'?'on':''}' data-m='c' onclick='lsm=this.dataset.m;go()'>English Course</button><button class='${lsm==='q'?'on':''}' data-m='q' onclick='lsm=this.dataset.m;go()'>Quick lessons</button></div>`+(lsm==='c'?courseView():l0().replace('<h2>Lessons</h2>',''))}
 {const m2=mergeS;mergeS=function(c){m2(c);if(c.a1){const a=AS();a.d=[...new Set([...a.d,...(c.a1.d||[])])];for(const k in (c.a1.b||{}))a.b[k]=Math.max(a.b[k]==null?0:a.b[k],c.a1.b[k])}}}
 {const p1=V.prog;V.prog=()=>p1()+`<div class='card'><b>English Course: A1</b><p>${AS().d.length} of ${A1.length} built lessons completed. ${saveNote()}</p><button class='b sm alt' data-n='lessons' data-m='c' onclick='lsm=this.dataset.m;go(this.dataset.n)'>Open course</button></div>`}
+
+/* ===== v7: A2 Elementary course (first 8 of 25 lessons built; same player as A1) ===== */
+const A1L=A1;
+function prs(raw){return raw.trim().split('\n\n').map(b=>{const o={t:'',o:[],e:'',x:[],v:[],g:'',q:[]};b.split('\n').forEach(l=>{const k=l[0],r=l.slice(2);if(k==='T')o.t=r;else if(k==='O')o.o=r.split('|');else if(k==='E')o.e=r;else if(k==='X')o.x=r.split('|');else if(k==='V')o.v=r.split('|').map(x=>x.split('='));else if(k==='G')o.g=r;else if(k==='Q'){const p=r.split('|');o.q.push({q:p[0],o:[p[1],p[2],p[3]],a:+p[4],w:p[5]})}});return o})}
+const A2L=prs(`T Present simple versus present continuous
+O Choose the present simple for habits and facts|Choose the present continuous for actions happening now
+E We use the present simple for habits, routines and facts: “I walk to work every day.” We use the present continuous for actions happening now or around now: “I am walking to work right now.” Time words help: “every day” and “usually” go with the simple, while “now” and “at the moment” go with the continuous.
+X I drink tea every morning.|Right now, I am drinking coffee.|She works in a hospital.|She is working late tonight.|They are playing football at the moment.
+V routine=something you do regularly=My morning routine starts at six.|at the moment=now=I am busy at the moment.|usually=most of the time=We usually eat at home.|currently=at this time=He is currently studying law.
+G Present continuous = am/is/are + verb-ing. Verbs such as know, like and want are not normally used in the continuous.
+Q She ___ to school by bus every day.|goes|is going|go|0|“Every day” shows a routine, so we use the present simple. With “she”, we add -es: goes.
+Q Look! It ___ outside.|rains|is raining|rain|1|“Look!” points to something happening now, so we use the present continuous.
+Q Which sentence is correct?|I am knowing the answer.|I know the answer.|I knowing the answer.|1|“Know” is a state verb, so we normally use the present simple.
+Q We ___ dinner at the moment.|have|are having|has|1|“At the moment” needs the present continuous: are having.
+Q Water ___ at 100 degrees Celsius.|boils|is boiling|boil|0|Facts use the present simple.
+
+T Past simple tense
+O Talk about finished actions in the past|Make past simple questions and negatives
+E We use the past simple for actions that finished in the past: “I visited my aunt yesterday.” For a negative, use “did not (didn’t)” + the base verb: “I didn’t visit her.” For a question, use “Did” + subject + base verb: “Did you visit her?” After “did”, the main verb never takes -ed.
+X I visited my cousin last weekend.|We didn’t go out because it rained.|Did you see the match yesterday?|She started a new job in March.|They watched a film and then went home.
+V yesterday=the day before today=I called him yesterday.|last week=the week before this one=We moved house last week.|ago=before now=She left two hours ago.|finish=to complete something=I finished work at six.
+G Negative: didn’t + base verb. Question: Did + subject + base verb?
+Q They ___ in London for three years.|live|lived|living|1|Regular verbs add -ed or -d in the past simple: lived.
+Q Choose the correct negative.|She didn’t came to the party.|She didn’t come to the party.|She not came to the party.|1|After “didn’t” the main verb stays in its base form.
+Q ___ you call me last night?|Do|Did|Are|1|Past simple questions start with “Did”.
+Q “Ago” is used with time in the…|past|future|present|0|“Two days ago” means two days before now.
+Q Which sentence describes a finished time?|I work here since 2020.|I worked there in 2020.|I am working there in 2020.|1|“In 2020” is a finished time, so we use the past simple.
+
+T Regular and irregular past-tense verbs
+O Spell regular past forms correctly|Use common irregular past verbs
+E Regular verbs add -ed (walk, walked). If a verb ends in -e, add -d (live, lived). If it ends in consonant + y, change y to i (study, studied). Irregular verbs have special forms that you must learn: go, went; buy, bought; see, saw.
+X I walked to the market this morning.|She studied until midnight.|We went to the beach on Sunday.|He bought a new phone last month.|They saw their friends at the station.
+V buy=to get something by paying money=I buy bread every day.|bought=the past form of buy=She bought a ticket.|went=the past form of go=We went home early.|saw=the past form of see=I saw a bird in the garden.
+G Common irregular verbs: go-went, have-had, eat-ate, take-took, come-came, make-made.
+Q What is the past simple of “study”?|studyed|studied|studed|1|After a consonant, change y to i and add -ed.
+Q What is the past simple of “go”?|goed|went|gone|1|“Go” is irregular: went.
+Q Yesterday I ___ a delicious sandwich.|eated|ate|eaten|1|“Eat” is irregular: ate.
+Q She ___ a cake for my birthday.|maked|made|make|1|“Make” is irregular: made.
+Q Which verb is regular?|play|come|buy|0|“Play” becomes “played”. “Come” and “buy” are irregular.
+
+T Future plans with “going to”
+O Talk about plans and intentions|Make positive, negative and question forms with “going to”
+E We use “going to” + base verb for plans we decided before speaking: “I am going to visit my grandmother.” We also use it when we can see that something will happen: “Look at those clouds. It’s going to rain.” The negative is “I’m not going to…”. The question is “Are you going to…?”
+X I’m going to study English tonight.|We’re going to travel in July.|She isn’t going to work tomorrow.|Are you going to join us?|Look at the sky! It’s going to rain.
+V plan=something you decide to do=My plan is to learn ten new words a day.|tomorrow=the day after today=Tomorrow is Friday.|next week=the week after this one=We’re moving next week.|intend=to plan to do something=I intend to save money.
+G going to = am/is/are + going to + base verb.
+Q I ___ visit my parents this weekend.|am going to|go to|am go to|0|Use am/is/are + going to + base verb.
+Q She ___ going to cook tonight because she is tired.|isn’t|doesn’t|aren’t|0|With “she”, the negative is “isn’t going to”.
+Q ___ you going to buy a car?|Do|Are|Is|1|Questions with “you” use “Are you going to…?”
+Q Look at those clouds. It ___.|is going to rain|rains|rained|0|We use “going to” for a prediction based on evidence.
+Q Which sentence shows a plan?|I’m going to learn the guitar.|I learned the guitar.|I learn the guitar yesterday.|0|“Going to” talks about a plan for the future.
+
+T Will and won’t for basic predictions
+O Make predictions with “will” and “won’t”|Choose between “will” and “going to”
+E We use “will” + base verb for predictions and opinions about the future: “I think it will be sunny.” We also use “will” for quick decisions: “I’ll help you.” The negative is “will not (won’t)”. The question is “Will it rain?” After “will”, the verb never takes -s.
+X I think it will be cold tomorrow.|She will probably win the game.|It won’t take long.|Will you help me with this bag?|I’ll call you after the meeting.
+V probably=very likely=It will probably rain tonight.|perhaps=maybe=Perhaps he will come later.|prediction=a statement about what will happen=My prediction is that the team will win.|promise=to say you will definitely do something=I promise I’ll be on time.
+G will/won’t + base verb for every subject: he will go, they won’t go.
+Q I think she ___ the exam.|will pass|will passes|pass will|0|After “will”, use the base verb.
+Q The phone is ringing. “I ___ answer it.”|will|am going|am|0|Quick decisions use “will”: I’ll answer it.
+Q Make this negative: “It will rain.”|It won’t rain.|It doesn’t will rain.|It not will rain.|0|The negative of “will” is “will not” or “won’t”.
+Q Which word often goes with “will” for a likely event?|probably|yesterday|ago|0|“Probably” shows that something is likely.
+Q Choose the correct question.|Will you to come?|Will you come?|Do you will come?|1|Questions begin with “Will” + subject + base verb.
+
+T Countable and uncountable nouns
+O Tell countable and uncountable nouns apart|Use a/an and plural forms correctly
+E Countable nouns can be counted: one apple, two apples. Uncountable nouns cannot be counted one by one: water, rice, information, advice. We do not add -s to uncountable nouns, and we do not use “a” before them. We can use a container word instead: a glass of water, a bag of rice.
+X I need an apple and two bananas.|We don’t have any rice.|Can I have a glass of water?|She gave me some good advice.|There is a lot of traffic today.
+V advice=a helpful suggestion=Thank you for your advice.|information=facts about something=I need some information.|bottle=a container for liquids=Please buy a bottle of milk.|traffic=cars moving on a road=The traffic is heavy this morning.
+G Uncountable nouns take singular verbs: The water is cold. Do not say “advices” or “informations”.
+Q Which noun is uncountable?|rice|banana|bottle|0|You do not say “one rice, two rices”.
+Q Which sentence uses the noun correctly?|She gave me an advice.|She gave me some advice.|She gave me advices.|1|“Advice” is uncountable, so we say “some advice”.
+Q I need ___ information.|an|some|two|1|Use “some” with uncountable nouns.
+Q How can you count milk?|two milks|two bottles of milk|a milk|1|Use a container word such as “bottle of”.
+Q The traffic ___ very heavy.|is|are|were|0|Uncountable nouns take a singular verb.
+
+T Some, any, much and many
+O Use some and any in statements, questions and negatives|Use much and many with the right nouns
+E Use “some” in positive sentences: “I have some friends.” Use “any” in questions and negatives: “Do you have any money?” “I don’t have any time.” Use “many” with countable nouns and “much” with uncountable nouns, usually in questions and negatives: “How many books?” “How much water?”
+X I bought some vegetables.|Do you have any brothers or sisters?|We don’t have any milk.|How many people are coming?|There isn’t much time left.
+V enough=as much as you need=We have enough chairs.|a lot of=a large number or amount=She has a lot of friends.|a few=a small number=I have a few questions.|a little=a small amount=Add a little sugar.
+G In offers and requests we can use “some”: Would you like some tea?
+Q I don’t have ___ money.|some|any|many|1|Negatives usually use “any”.
+Q How ___ students are in your class?|much|many|any|1|“Students” is countable, so use “many”.
+Q How ___ sugar do you take?|many|much|few|1|“Sugar” is uncountable, so use “much”.
+Q Would you like ___ coffee?|any|some|many|1|In offers we normally use “some”.
+Q There ___ many cars on the road at night.|aren’t|isn’t|doesn’t|0|“Cars” is plural, so use “aren’t”.
+
+T Comparatives and superlatives
+O Compare two things with comparatives|Use superlatives for the highest or lowest in a group
+E For short adjectives add -er and -est: fast, faster, the fastest. For long adjectives use more and the most: expensive, more expensive, the most expensive. Some adjectives are irregular: good, better, the best; bad, worse, the worst. We use “than” after a comparative.
+X My brother is taller than me.|This phone is cheaper than that one.|The train is more comfortable than the bus.|It was the best holiday of my life.|Cairo is one of the biggest cities in Africa.
+V cheap=not expensive=This café is cheap.|comfortable=pleasant to sit or stay in=The sofa is comfortable.|tall=high, usually for people or buildings=She is taller than me.|expensive=costing a lot of money=Hotels here are expensive.
+G Double the final consonant in short adjectives like big: bigger, the biggest. Change y to i: easy, easier, the easiest.
+Q Today is ___ than yesterday.|hotter|more hot|the hottest|0|“Hot” is short, so double the t: hotter.
+Q This is ___ book I have ever read.|better|the best|more good|1|“Good” has the irregular superlative “the best”.
+Q Which is correct?|more expensive than|expensiver than|most expensive than|0|Long adjectives use “more” + adjective + “than”.
+Q What is the comparative of “easy”?|easyer|easier|more easy|1|Change y to i and add -er.
+Q What is the superlative of “bad”?|worse|the worst|the baddest|1|“Bad” is irregular: worse, the worst.`);
+const A2C=['Adverbs of frequency','Object pronouns','Should and shouldn’t','Must and have to','Everyday problems and solutions','Making requests politely','Travel and transport','Hotel check-in','Shopping and returns','Health and appointments','Invitations and arrangements','Describing past experiences','Talking about future plans','Giving opinions and reasons','Understanding short messages and emails','Everyday telephone conversations','A2 final review and assessment'];
+function useC(k){CK=k;A1=k==='a2'?A2L:A1L}
+function akOpenC(k,i){useC(k);akOpen(i)}
+function courseView(){const sec=(k,name,L,C)=>{const a=S[k]||{d:[],b:{}};return `<h3>${name}</h3><small>${a.d.length} of ${L.length} built lessons completed (${L.length} of ${L.length+C.length} built so far)</small><div class='bar'><i style='width:${a.d.length/(L.length+C.length)*100}%'></i></div>`+L.map((l,i)=>`<div class='card tap' data-k='${k}' data-i='${i}' onclick='akOpenC(this.dataset.k,+this.dataset.i)'><b>${a.d.includes(i)?'✅ ':''}${i+1}. ${l.t}</b>${a.b[i]!=null?`<p><small>Best quiz score: ${a.b[i]} / 5</small></p>`:''}</div>`).join('')+`<details class='card'><summary><b>Coming soon: ${C.length} more lessons</b></summary>${C.map((t,j)=>`<p><small>${L.length+j+1}. ${t}</small></p>`).join('')}</details>`};return `<div class='card'><b>Your course path</b><p><small>CEFR-inspired levels. This is not an official qualification, and finishing lessons does not guarantee fluency. Each lesson has explanations, examples to listen to and say, vocabulary and a 5-question quiz.</small></p><p class='note'>${saveNote()}</p></div>`+sec('a1','A1 Beginner',A1L,A1C)+sec('a2','A2 Elementary',A2L,A2C)+`<details class='card'><summary><b>Roadmap: B1 to C2</b> <small>Coming soon</small></summary>${LVR.slice(1).map(r=>`<p><b>${r[0]}</b><br><small>Planned focus: ${r[1]}. Not built yet. Quick lessons for these levels are in the Quick lessons tab.</small></p>`).join('')}</details>`}
+{const m3=mergeS;mergeS=function(c){const k=CK;useC('a1');m3(c);useC('a2');if(c.a2){const a=AS();a.d=[...new Set([...a.d,...(c.a2.d||[])])];for(const q in(c.a2.b||{}))a.b[q]=Math.max(a.b[q]==null?0:a.b[q],c.a2.b[q])}useC(k)}}
+{const p3=V.prog;V.prog=()=>{const k=CK;useC('a1');let h;try{h=p3()}finally{useC(k)}const a=S.a2||{d:[]};return h+`<div class='card'><b>English Course: A2 Elementary</b><p>${a.d.length} of ${A2L.length} built lessons completed. ${saveNote()}</p><button class='b sm alt' data-n='lessons' data-m='c' onclick='lsm=this.dataset.m;go(this.dataset.n)'>Open course</button></div>`}}
 
 /* ===== ROUTER ===== */
 const T=[['home','🏠','Home'],['lessons','📘','Lessons'],['speak','🎙️','Speaking'],['vocab','🔤','Vocabulary'],['gram','✏️','Grammar'],['quiz','🧠','Quizzes'],['prog','📈','Progress'],['plan','📅','Free plan'],['prem','⭐','Premium'],['more','ℹ️','More']];
