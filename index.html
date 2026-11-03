@@ -1001,6 +1001,20 @@ function pmReset(){while(A1L.length>20)A1L.pop();AO1.length=Math.min(AO1.length,
 {const a0=V.acct;V.acct=()=>a0()+(isAdmin()?`<div class='card'><b>Owner tools</b><p><small>Upload premium lessons and approve access.</small></p><button class='b sm' data-n='admin' onclick='go(this.dataset.n)'>Premium admin</button></div>`:'')}
 {const c2=cmpT;cmpT=function(){return c2().replace('<tr><td>Business English</td>','<tr><td>A1 lessons 21 to 30</td><td>Locked</td><td>Planned</td></tr><tr><td>Business English</td>')}}
 
+/* ===== v15: planned prices + policy links. Subscribe buttons stay disabled until you paste real checkout links into PAYURL. ===== */
+const PLANS=[['Weekly','$5','per week',''],['Monthly','$15','per month',''],['Yearly','$90','per year','50% less than paying monthly']],PAYURL={Weekly:'',Monthly:'',Yearly:''};
+function plansCard(){return `<div class='card'><b>Plans</b><p class='note'>Prices are in US dollars. Subscriptions are not open yet, so there is nothing to buy today. Taxes may be added at checkout, and subscriptions renew until you cancel.</p>`+PLANS.map(p=>`<div class='row'><span><b>${p[1]}</b> ${p[2]}<br><small>${p[0]}${p[3]?', '+p[3]:''}</small></span>${PAYURL[p[0]]?`<a class='b sm' href='${PAYURL[p[0]]}' target='_blank' rel='noopener' style='text-decoration:none'>Subscribe</a>`:`<button class='b sm alt' disabled>Coming soon</button>`}</div>`).join('')+`<small><a href='premium.html' target='_blank' rel='noopener' style='color:var(--pri)'>Full details and refund policy</a></small></div>`}
+{const pr1=V.prem;V.prem=()=>pr1().replace("<div class='seg'>",plansCard()+"<div class='seg'>")}
+{const mo1=V.more;V.more=()=>mo1()+`<div class='card'><b>Policies and contact</b><p><small><a href='terms.html' target='_blank' rel='noopener' style='color:var(--pri)'>Terms</a>, <a href='privacy.html' target='_blank' rel='noopener' style='color:var(--pri)'>Privacy policy</a>, <a href='refund.html' target='_blank' rel='noopener' style='color:var(--pri)'>Refund policy</a>, <a href='contact.html' target='_blank' rel='noopener' style='color:var(--pri)'>Contact</a><br>Support: Shoaib_h11@yahoo.com</small></p></div>`}
+
+/* ===== v15: links to the public Premium and policy pages ===== */
+const SITEU='https://shoaibs5.github.io/Speakup-English/',lk=(f,t)=>`<a class='b sm alt' style='text-decoration:none;display:inline-block' href='${SITEU}${f}' target='_blank' rel='noopener'>${t}</a>`,polCard=()=>`<div class='card'><b>Premium plans and policies</b><p><small>These pages open on our website.</small></p><div class='acts'>${lk('premium.html','Plans and prices')}${lk('terms.html','Terms')}${lk('privacy.html','Privacy policy')}${lk('refund.html','Refunds')}${lk('contact.html','Contact')}</div></div>`;
+{const mr=V.more;V.more=()=>mr()+polCard()}
+{const pr2=V.prem;V.prem=()=>pr2()+polCard()}
+
+/* ===== v15: links to the public Premium and policy pages (More, Privacy tab) ===== */
+{const m9=V.more;V.more=()=>m9()+(mm==='p'?`<div class='card lg'><style>.lg a{color:var(--pri);font-weight:600}</style><b>Plans and policies</b><p><a href='premium.html'>Premium plans and prices</a><br><a href='terms.html'>Terms of Service</a><br><a href='privacy.html'>Privacy Policy</a><br><a href='refund.html'>Refund Policy</a><br><a href='contact.html'>Contact us</a></p><p class='note'>These pages are drafts in plain language and have not been legally reviewed.</p></div>`:'')}
+
 /* ===== ROUTER ===== */
 const T=[['home','🏠','Home'],['lessons','📘','Lessons'],['speak','🎙️','Speaking'],['vocab','🔤','Vocabulary'],['gram','✏️','Grammar'],['quiz','🧠','Quizzes'],['prog','📈','Progress'],['plan','📅','Free plan'],['prem','⭐','Premium'],['more','ℹ️','More']];
 $('#nav').innerHTML=T.filter(t=>NAVM.includes(t[0])).map(t=>`<button data-n="${t[0]}" onclick="go('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join('');
