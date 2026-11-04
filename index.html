@@ -1015,9 +1015,16 @@ const SITEU='https://shoaibs5.github.io/Speakup-English/',lk=(f,t)=>`<a class='b
 /* ===== v15: links to the public Premium and policy pages (More, Privacy tab) ===== */
 {const m9=V.more;V.more=()=>m9()+(mm==='p'?`<div class='card lg'><style>.lg a{color:var(--pri);font-weight:600}</style><b>Plans and policies</b><p><a href='premium.html'>Premium plans and prices</a><br><a href='terms.html'>Terms of Service</a><br><a href='privacy.html'>Privacy Policy</a><br><a href='refund.html'>Refund Policy</a><br><a href='contact.html'>Contact us</a></p><p class='note'>These pages are drafts in plain language and have not been legally reviewed.</p></div>`:'')}
 
+/* ===== v16: welcome screen at launch (sign in or sign up with Google, or continue as guest for 7 days) ===== */
+document.head.insertAdjacentHTML('beforeend',"<style>.wl #nav,.wl header{display:none!important}.wl main{padding-bottom:24px}</style>");
+function startView(){try{if(Date.now()-(+localStorage.getItem('su_gts')||0)<6048e5)return 'home'}catch(e){}return hasAuthKey()?'home':'welcome'}
+function wlGuest(){try{localStorage.setItem('su_gts',String(Date.now()))}catch(e){}go('home')}
+V.welcome=()=>`<div style='min-height:calc(100vh - 48px);display:flex;flex-direction:column;justify-content:center;text-align:center'><img src='${LOGO}' width='96' height='96' alt='SpeakUp English logo' style='border-radius:22px;margin:0 auto'><h1 style='margin:14px 0 6px;font-size:28px'>Speak<span style='color:#5ee0ff'>Up</span> English</h1><p style='margin:0 0 16px'>Learn and practise English with lessons, quizzes and speaking practice.</p><button class='b w' onclick='signIn()'>Sign in or sign up with Google</button><button class='b alt w' style='margin-top:4px' onclick='wlGuest()'>Continue as guest</button><p class='note' style='margin-top:14px'>New here? Signing in with Google creates your account automatically. It saves your progress so you can continue on any device, and it is needed for Premium lessons. Guests can use all the free features, and their progress stays on this phone. We never see your Google password.</p><p class='note'><a href='privacy.html' style='color:var(--pri)'>Privacy Policy</a> and <a href='terms.html' style='color:var(--pri)'>Terms</a></p></div>`;
+{const g0=go;go=function(n){g0(n);document.body.classList.toggle('wl',cur==='welcome')}}
+
 /* ===== ROUTER ===== */
 const T=[['home','🏠','Home'],['lessons','📘','Lessons'],['speak','🎙️','Speaking'],['vocab','🔤','Vocabulary'],['gram','✏️','Grammar'],['quiz','🧠','Quizzes'],['prog','📈','Progress'],['plan','📅','Free plan'],['prem','⭐','Premium'],['more','ℹ️','More']];
 $('#nav').innerHTML=T.filter(t=>NAVM.includes(t[0])).map(t=>`<button data-n="${t[0]}" onclick="go('${t[0]}')"><span>${t[1]}</span>${t[2]}</button>`).join('');
 function go(n){if(n&&n!==cur){cur=n;scrollTo(0,0)}$('#v').innerHTML=V[cur]();document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.n===cur));$('#lvb').textContent=LV[S.lv]}
-go('home');
+go(startView());
 </script></body></html>
